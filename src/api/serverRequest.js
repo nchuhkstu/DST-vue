@@ -1,9 +1,25 @@
 import { request } from "../utils/request";
-//专门放服务器接口
-export function start(formData){
+export function start(cluster_name){
     return request({
-        url:'/processData/polishText',
-        method: 'post',
-        data:formData
+        url:`/server/start/${cluster_name}`,
+        method: 'get'
+    })
+}
+export function stop(cluster_name){
+    return request({
+        url:`/server/stop/${cluster_name}`,
+        method: 'get'
+    })
+}
+export function save(cluster_name){
+    return request({
+        url:`/server/save/${cluster_name}`,
+        method: 'get'
+    })
+}
+export function backtrack(cluster_name,days){
+    return request({
+        url:`/server/start/${cluster_name}/${days}`,
+        method: 'get'
     })
 }

@@ -1,9 +1,19 @@
 import { request } from "../utils/request";
-//专门放存档接口
-export function polish(formData){
+export function get(){
     return request({
-        url:'/processData/polishText',
-        method: 'post',
-        data:formData
+        url:'/cluster/get',
+        method: 'get'
+    })
+}
+export function add(){
+    return request({
+        url:'/cluster/add',
+        method: 'get'
+    })
+}
+export function Delete(cluster_name){
+    return request({
+        url:`/cluster/${cluster_name}`,
+        method: 'delete'
     })
 }
