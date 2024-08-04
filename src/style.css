@@ -58,12 +58,16 @@ button:focus-visible {
   padding: 2em;
 }
 
-/* #app {
-  max-width: 1280px;
+#app {
+  background-image: url(../src/assets/background.png);
+  /* background-position:initial; */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
-} */
+  text-align: center; */
+}
 
 @media (prefers-color-scheme: light) {
   :root {

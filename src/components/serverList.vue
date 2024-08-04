@@ -11,7 +11,10 @@
     </div>
     <div class="container">
         <server v-for="server in servers" :server="server" @delete="handleDelete"></server>
-        <div class="add" @click="handleAdd">添加</div>
+        <div class="add" >
+            <div class="add-item" @click="handleAdd"><i class="ri-add-circle-line"></i></div>
+            <div class="add-item" @click="handleAdd">添加</div>
+        </div>
     </div>
 </template>
 <script>
@@ -61,8 +64,9 @@ export default{
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: rgb(240,240,240);
+    background-color: rgb(217, 190, 109);
     font-weight: bolder;
+    color: black;
 }
 .item{
     height: 40%;
@@ -83,12 +87,20 @@ export default{
 }
 .add{
     height: 11.11%;
-    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
     font-size: 3vh;
     border-top: 0.1vh solid black;
     border-bottom: 0.1vh solid black;
+    cursor: pointer;
+}
+.add:hover{
+    color: rgb(224, 173, 71);
+    background-color: rgb(83, 64, 41);
+}
+.add-item{
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 </style>

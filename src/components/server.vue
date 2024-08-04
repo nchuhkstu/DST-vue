@@ -4,7 +4,7 @@
         <div class="item">{{ server.server_name }}</div>
         <div class="item">{{ server.game_mode }}</div>
         <div class="item">{{ server.days }}</div>
-        <div class="item">{{ server.people_num }}</div>
+        <div class="item">{{ server.current_players + '/' + server.max_players }}</div>
         <div class="item">{{ server.status }}</div>
         <div class="item">{{ server.port }}</div>
         <div class="operation-container">
