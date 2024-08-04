@@ -64,7 +64,7 @@ export default{
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: rgb(217, 190, 109);
+    background-color: rgb(207, 182, 107);
     font-weight: bolder;
     color: black;
 }
