@@ -33,7 +33,9 @@ export default{
     methods:{
         handleGet(){
             get().then(response=>{
-                this.servers = response.data
+                if(response.data!="false"){
+                    this.servers = response.data
+                }
             })
         },
         handleAdd(){

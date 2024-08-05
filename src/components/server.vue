@@ -32,7 +32,9 @@ export default{
     },
     methods:{
         handleStart(){
-            start(this.server.cluster_name).then()
+            start(this.server.cluster_name).then(response=>{
+                console.log(response.data);
+            })
         },
         handleStop(){
             stop(this.server.cluster_name).then()
