@@ -1,5 +1,8 @@
 <template>
     <div class="roomSet">
+        <div class="list">
+            <div class="list-item" v-for="(cluster,index) in clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
+        </div>
         <div class="item">
             <div class="label">名称 :</div>
             <div class="input-container">
@@ -29,17 +32,17 @@
         <div class="item">
             <div class="label">玩家 :</div>
             <div class="count-container">
-                <div class="icon"><i class="ri-arrow-left-wide-line"></i></div>
+                <div class="icon" @click="changePlayers(-1)"><i class="ri-arrow-left-wide-line"></i></div>
                 <div class="count">{{ cluster.max_players }}</div>
-                <div class="icon"><i class="ri-arrow-right-wide-line"></i></div>
+                <div class="icon" @click="changePlayers(1)"><i class="ri-arrow-right-wide-line"></i></div>
             </div>
         </div>
         <div class="item">
             <div class="label">快照 :</div>
             <div class="count-container">
-                <div class="icon"><i class="ri-arrow-left-wide-line"></i></div>
+                <div class="icon" @click="changeSnapshots(-1)"><i class="ri-arrow-left-wide-line"></i></div>
                 <div class="count">{{ cluster.max_snapshots }}</div>
-                <div class="icon"><i class="ri-arrow-right-wide-line"></i></div>
+                <div class="icon" @click="changeSnapshots(1)"><i class="ri-arrow-right-wide-line"></i></div>
             </div>
         </div>
         <div class="item">
@@ -50,54 +53,88 @@
         </div>
         <div class="item">
             <div class="radio-container">
-                <input type="checkbox" name="options1" value="endless" v-model="cluster.pvp"> 玩家对战 
+                <input type="checkbox" name="options1" :true-value="true" :false-value="false"  v-model="cluster.pvp"> 玩家对战
             </div>
             <div class="radio-container">
-                <input type="checkbox" name="options2" value="survival" v-model="cluster.pause_when_empty"> 无人时暂停
+                <input type="checkbox" name="options3" :true-value="true" :false-value="false" v-model="cluster.vote_enabled"> 投票重置
             </div>
             <div class="radio-container">
-                <input type="checkbox" name="options3" value="survival" v-model="cluster.vote_enabled"> 投票重置
+                <input type="checkbox" name="options4" :true-value="true" :false-value="false" v-model="cluster.vote_kick_enabled"> 投票踢人
             </div>
             <div class="radio-container">
-                <input type="checkbox" name="options4" value="survival" v-model="cluster.vote_kick_enabled"> 投票踢人
+                <input type="checkbox" name="options2" :true-value="true" :false-value="false" v-model="cluster.pause_when_empty"> 无人时暂停
             </div>
         </div>
         <div class="item">
-            <label class="submit" @click="handlePost">保存</label>
+            <label class="submit" @click="handleSetRoom">保存</label>
         </div>
     </div>
 </template>
 <script>
-import { get,post } from '../api/systemRequest'
+import { isVNode } from 'vue';
+import { get,getRoom,setRoom } from '../api/cluserRequest'
 import 'remixicon/fonts/remixicon.css'
 export default{
     name:'roomSet',
     data(){
         return{
             cluster:{
-                cluster_name:"",
-                cluster_description:"",
+                cluster_index:null,
+                cluster_name:null,
+                cluster_description:null,
                 game_mode:"endless",
-                max_players:8,
+                max_players:Number(8),
                 max_snapshots:6,
-                cluster_password:"",
+                cluster_password:null,
                 pvp:false,
                 pause_when_empty:true,
                 vote_enabled:true,
                 vote_kick_enabled:true
-            }
+            },
+            clusters:null,
+            index:null
         }
     },
     methods:{
+        handleGetRoom(){
+            getRoom(this.clusters[this.index].cluster_name).then(response=>{
+                this.cluster = response.data;
+            })
+        },
+        handleSetRoom(){
+            setRoom({"cluster":this.cluster}).then(response=>{
+                console.log(response.data)
+            })  
+        },
         handleGet(){
             get().then(response=>{
-                this.data = response.data;
+                this.clusters = response.data;
+                this.changeIndex(0);
             })
         },
         handlePost(){
             post(this.data).then(response=>{
 
             })
+        },
+        changeIndex(index){
+            this.index = index;
+            this.handleGetRoom();
+        },
+        changePlayers(num){
+            if(Number(this.cluster.max_players) + Number(num) == 0)
+                return;
+            else{
+                console.log(typeof this.cluster.max_players)
+                this.cluster.max_players = Number(this.cluster.max_players) + Number(num);
+            }
+        },
+        changeSnapshots(num){
+            if(Number(this.cluster.max_snapshots) + Number(num) == -1)
+                return;
+            else{
+                this.cluster.max_snapshots = Number(this.cluster.max_snapshots) + Number(num);
+            }
         }
     },
     mounted(){
@@ -109,11 +146,29 @@ export default{
 .roomSet{
     height: 100%;
     width: 100%;
+    position: relative;
+}
+.list{
+    position: absolute;
+    width: 15%;
+    height: calc(80% + 7vh);
+    left: 2%;
+    top: 0%;
+    background-color: rgb(46,37,27);
+    overflow: auto;
+}
+.list-item{
+    width: 100%;
+    height: 12.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
 
 }
 .item{
     height: 10%;
-    margin: 1vh 15%;
+    margin: 1vh 20%;
     width: 70%;
     display: flex;
     align-items: center;
@@ -122,7 +177,7 @@ export default{
 }
 .label{
     margin-right: 2vw;
-    font-size: 2vh;
+    font-size: 3vh;
     font-weight: bold;
     color: rgb(201,173,117);
 }
@@ -138,7 +193,7 @@ export default{
     width: 20%;
     display: flex;
     align-items: center;
-    font-size: 2vh;
+    font-size: 3vh;
 }
 input[type="radio"] {
     height: 3.5vh;
@@ -158,7 +213,7 @@ input:not([type="radio"]):not([type="checkbox"]) {
     outline: none;
     border-radius: 1vh;
     padding: 0.5vh 0.5vw;
-    font-size: 2vh;
+    font-size: 2.5vh;
     background-color: rgb(247,236,211);
     border: 0.3vh solid rgb(118,82,44);
 }
@@ -199,5 +254,6 @@ input:focus{
 }
 .count{
     margin: 0 6vw;
+    font-size: 3.5vh;
 }
 </style>
