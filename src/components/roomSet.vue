@@ -1,78 +1,82 @@
 <template>
     <div class="roomSet">
         <div class="list">
-            <div class="list-item" v-for="(cluster,index) in clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
+            <div class="list-item" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
-        <div class="item">
-            <div class="label">名称 :</div>
-            <div class="input-container">
-                <input v-model="cluster.cluster_name">
+        <div class="set-container">
+            <div class="item">
+                <div class="label">名称 :</div>
+                <div class="input-container">
+                    <input v-model="cluster.cluster_name">
+                </div>
+            </div>
+            <div class="item">
+                <div class="label">描述 :</div>
+                <div class="input-container">
+                    <input v-model="cluster.cluster_description">
+                </div>
+            </div>
+            <div class="item">
+                <div class="radio-container">
+                    <input type="radio" name="options" value="endless" v-model="cluster.game_mode"> 无尽 
+                </div>
+                <div class="radio-container">
+                    <input type="radio" name="options" value="survival" v-model="cluster.game_mode"> 生存 
+                </div>
+                <div class="radio-container">
+                    <input type="radio" name="options" value="wilderness" v-model="cluster.game_mode"> 荒野 
+                </div>
+                <div class="radio-container">
+                    <input type="radio" name="options" value="dark" v-model="cluster.game_mode"> 暗无天日 
+                </div>
+            </div>
+            <div class="item">
+                <div class="label">玩家 :</div>
+                <div class="count-container">
+                    <div class="icon" @click="changePlayers(-1)"><i class="ri-arrow-left-wide-line"></i></div>
+                    <div class="count">{{ cluster.max_players }}</div>
+                    <div class="icon" @click="changePlayers(1)"><i class="ri-arrow-right-wide-line"></i></div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="label">快照 :</div>
+                <div class="count-container">
+                    <div class="icon" @click="changeSnapshots(-1)"><i class="ri-arrow-left-wide-line"></i></div>
+                    <div class="count">{{ cluster.max_snapshots }}</div>
+                    <div class="icon" @click="changeSnapshots(1)"><i class="ri-arrow-right-wide-line"></i></div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="label">密码 :</div>
+                <div class="input-container">
+                    <input v-model="cluster.cluster_password">
+                </div>
+            </div>
+            <div class="item">
+                <div class="radio-container">
+                    <input type="checkbox" name="options1" :true-value="true" :false-value="false"  v-model="cluster.pvp"> 玩家对战
+                </div>
+                <div class="radio-container">
+                    <input type="checkbox" name="options3" :true-value="true" :false-value="false" v-model="cluster.vote_enabled"> 投票重置
+                </div>
+                <div class="radio-container">
+                    <input type="checkbox" name="options4" :true-value="true" :false-value="false" v-model="cluster.vote_kick_enabled"> 投票踢人
+                </div>
+                <div class="radio-container">
+                    <input type="checkbox" name="options2" :true-value="true" :false-value="false" v-model="cluster.pause_when_empty"> 无人时暂停
+                </div>
+            </div>
+            <div class="item">
+                <label class="submit" @click="handleSetRoom">保存</label>
             </div>
         </div>
-        <div class="item">
-            <div class="label">描述 :</div>
-            <div class="input-container">
-                <input v-model="cluster.cluster_description">
-            </div>
-        </div>
-        <div class="item">
-            <div class="radio-container">
-                <input type="radio" name="options" value="endless" v-model="cluster.game_mode"> 无尽 
-            </div>
-            <div class="radio-container">
-                <input type="radio" name="options" value="survival" v-model="cluster.game_mode"> 生存 
-            </div>
-            <div class="radio-container">
-                <input type="radio" name="options" value="wilderness" v-model="cluster.game_mode"> 荒野 
-            </div>
-            <div class="radio-container">
-                <input type="radio" name="options" value="dark" v-model="cluster.game_mode"> 暗无天日 
-            </div>
-        </div>
-        <div class="item">
-            <div class="label">玩家 :</div>
-            <div class="count-container">
-                <div class="icon" @click="changePlayers(-1)"><i class="ri-arrow-left-wide-line"></i></div>
-                <div class="count">{{ cluster.max_players }}</div>
-                <div class="icon" @click="changePlayers(1)"><i class="ri-arrow-right-wide-line"></i></div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="label">快照 :</div>
-            <div class="count-container">
-                <div class="icon" @click="changeSnapshots(-1)"><i class="ri-arrow-left-wide-line"></i></div>
-                <div class="count">{{ cluster.max_snapshots }}</div>
-                <div class="icon" @click="changeSnapshots(1)"><i class="ri-arrow-right-wide-line"></i></div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="label">密码 :</div>
-            <div class="input-container">
-                <input v-model="cluster.cluster_password">
-            </div>
-        </div>
-        <div class="item">
-            <div class="radio-container">
-                <input type="checkbox" name="options1" :true-value="true" :false-value="false"  v-model="cluster.pvp"> 玩家对战
-            </div>
-            <div class="radio-container">
-                <input type="checkbox" name="options3" :true-value="true" :false-value="false" v-model="cluster.vote_enabled"> 投票重置
-            </div>
-            <div class="radio-container">
-                <input type="checkbox" name="options4" :true-value="true" :false-value="false" v-model="cluster.vote_kick_enabled"> 投票踢人
-            </div>
-            <div class="radio-container">
-                <input type="checkbox" name="options2" :true-value="true" :false-value="false" v-model="cluster.pause_when_empty"> 无人时暂停
-            </div>
-        </div>
-        <div class="item">
-            <label class="submit" @click="handleSetRoom">保存</label>
-        </div>
+        
     </div>
 </template>
 <script>
 import { isVNode } from 'vue';
-import { get,getRoom,setRoom } from '../api/cluserRequest'
+import { getRoom,setRoom } from '../api/cluserRequest'
+import { useClusterStore} from '../store/clusterStore'
 import 'remixicon/fonts/remixicon.css'
 export default{
     name:'roomSet',
@@ -92,7 +96,8 @@ export default{
                 vote_kick_enabled:true
             },
             clusters:null,
-            index:null
+            index:null,
+            clusterStore:useClusterStore(),
         }
     },
     methods:{
@@ -105,12 +110,6 @@ export default{
             setRoom({"cluster":this.cluster}).then(response=>{
                 console.log(response.data)
             })  
-        },
-        handleGet(){
-            get().then(response=>{
-                this.clusters = response.data;
-                this.changeIndex(0);
-            })
         },
         handlePost(){
             post(this.data).then(response=>{
@@ -138,7 +137,7 @@ export default{
         }
     },
     mounted(){
-        this.handleGet()
+
     }
 }
 </script>
@@ -150,11 +149,11 @@ export default{
 }
 .list{
     position: absolute;
-    width: 15%;
-    height: calc(80% + 7vh);
+    width: 10%;
+    height: calc(80% + 5vh);
     left: 2%;
-    top: 0%;
-    background-color: rgb(46,37,27);
+    top: 3vh;
+    /* background-color: rgb(32,28,24); */
     overflow: auto;
 }
 .list-item{
@@ -164,12 +163,20 @@ export default{
     align-items: center;
     justify-content: center;
     font-size: 3vh;
+    margin-bottom: 1vh;
+    background-color: rgb(46,37,27);
 
+}
+.set-container{
+    height: calc(100% - 3vh);
+    padding-top: 3vh;
+    width: 100%;
 }
 .item{
     height: 10%;
-    margin: 1vh 20%;
-    width: 70%;
+    margin: 0 15%;
+    margin-bottom: 1vh;
+    width: 80%;
     display: flex;
     align-items: center;
     justify-content: center;

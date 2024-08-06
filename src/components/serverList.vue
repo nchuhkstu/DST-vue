@@ -10,7 +10,7 @@
         <div class="item">操作</div>
     </div>
     <div class="container">
-        <server v-for="server in servers" :server="server" @delete="handleDelete"></server>
+        <server v-for="server in clusterStore.clusters" :server="server" @delete="handleDelete"></server>
         <div class="add" >
             <div class="add-item" @click="handleAdd"><i class="ri-add-circle-line"></i></div>
             <div class="add-item" @click="handleAdd">添加</div>
@@ -20,6 +20,7 @@
 <script>
 import server from '../components/server.vue'
 import { get,add,Delete } from '../api/cluserRequest'
+import { useClusterStore} from '../store/clusterStore'
 export default{
     name:'serverList',
     components:{
@@ -27,28 +28,27 @@ export default{
     },
     data(){
         return{
-            servers:[],
+            clusterStore:useClusterStore(),
         }
     },
     methods:{
         handleGet(){
             get().then(response=>{
                 if(response.data!="false"){
-                    this.servers = response.data
+                    this.clusterStore.clusters = response.data;
                 }
             })
         },
         handleAdd(){
             add().then(response=>{
-                this.servers.push(response.data)
-                console.log(response.data)
+                this.clusterStore.clusters.push(response.data)
             })
         },
         handleDelete(cluster_name){
             Delete(cluster_name).then(response=>{
-                for(let i=0;i<this.servers.length;i++){
-                    if(this.servers[i].cluster_name==cluster_name){
-                        this.servers.splice(i, 1);
+                for(let i=0;i<this.clusterStore.clusters.length;i++){
+                    if(this.clusterStore.clusters[i].cluster_name==cluster_name){
+                        this.clusterStore.clusters.splice(i, 1);
                         break;
                     }
                 }

@@ -44,7 +44,7 @@
             </div>
             <div class="function">
                 <KeepAlive>
-                    <component :is="activeComponent" class="component"></component>
+                    <component :is="activeComponent"></component>
                 </KeepAlive>
             </div>
         </div>
@@ -59,6 +59,8 @@ import modSet from '../components/modSet.vue'
 import resourceUsage from '../components/resourceUsage.vue'
 import systemSet from '../components/systemSet.vue'
 import 'remixicon/fonts/remixicon.css'
+import io from 'socket.io-client';
+import { useLogStore } from '../store/logStore'
 export default{
     components:{
         serverList,
@@ -71,7 +73,9 @@ export default{
     },
     data(){
         return{
-            activeComponent:'serverList'
+            activeComponent:'serverList',
+            socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
+            logStore:useLogStore(),
         }
     },
     methods:{
@@ -81,10 +85,15 @@ export default{
                 item.classList.remove('selected');
             });
             document.getElementById(component).classList.add('selected');
-        }
+        },
+        init(){
+            this.socketio.on('log',(data)=>{
+                this.logStore.addLog(data);
+            })
+        },
     },
     mounted(){
-        //this.handleAdd();
+        this.init();
     }
 }
 </script>
@@ -178,10 +187,6 @@ export default{
 }
 .function{
     height: calc(100% - 10vh);
-    width: 100%;
-}
-.component{
-    height: 100%;
     width: 100%;
 }
 </style>

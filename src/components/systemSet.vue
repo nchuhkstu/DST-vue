@@ -1,5 +1,5 @@
 <template>
-    <div class="systemSet">
+    <div class="SystemSet">
         <div class="item">
             <div class="label">专用服务器可执行文件路径</div>
             <div class="input-container">
