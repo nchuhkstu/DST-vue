@@ -7,7 +7,14 @@ export const useClusterStore = defineStore('cluster', {
   }),
   actions: {
     setIndex(index){
-        this.index = index;
+      this.index = index;
+      this.refreshIndex();
+    },
+    refreshIndex(){
+      document.querySelectorAll('.list-item').forEach(function(item) {
+        item.classList.remove('selected');
+      });
+      document.getElementById("list-item-" + this.index).classList.add("selected");
     },
     decrement() {
       this.count--

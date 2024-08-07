@@ -1,7 +1,7 @@
 <template>
     <div class="runninSituation">
         <div class="list">
-            <div class="list-item" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
+            <div class="list-item" :id="`list-item-${index}`" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
         <div class="log-container">
             <div class="log" id="log">
@@ -51,7 +51,7 @@ export default{
     },
     methods:{
         changeIndex(index){
-            this.clusterStore.setIndex(index);
+            this.clusterStore.setIndex(Number(index));
         },
         goBottom(){
             var container = document.getElementById('log');
@@ -62,6 +62,9 @@ export default{
     },
     mounted(){
         this.goBottom();
+    },
+    activated(){
+        this.clusterStore.refreshIndex();
     }
 }
 </script>
@@ -74,27 +77,39 @@ export default{
 }
 .list{
     position: absolute;
-    width: 10%;
-    height: calc(80% + 5vh);
+    width: calc(13% - 1.2vh);
+    height: calc(90% + 5.5vh - 1.2vh);
     left: 2%;
-    top: 3vh;
-    background-color: rgb(32,28,24);
+    top: 0vh;
+    background-color: rgba(110, 81, 47, 0.6);
+    border: 0.6vh solid rgb(118,82,44);
     overflow: auto;
 }
 .list-item{
-    width: 100%;
+    width: 90%;
+
     height: 12.5%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3vh;
+    margin: 1vh 5%;
+    cursor: pointer;
+    border-radius: 1vh;
+}
+.list-item.selected{
+    background-color: rgb(110,81,47);
+    color: rgb(224,173,71);
+}
+.list-item:hover{
+    background-color: rgb(110,81,47);
+    color: rgb(224,173,71);
 }
 .log-container{
-    height: calc(80% + 5vh);
-    margin-left: 15%;
-    margin-top: 3vh;
+    height: calc(90% + 5vh);
+    margin-left: 17%;
+    margin-top: 0vh;
     width: 60%;
-
 }
 .log{
     height: calc(90% - 1.2vh);
@@ -142,7 +157,7 @@ export default{
 .resource-container{
     height: calc(80% + 5vh);
     width: 20%;
-    margin-left: 3%;
+    margin-left: 2%;
     margin-top: 3vh;
     background-color: aquamarine;
 }

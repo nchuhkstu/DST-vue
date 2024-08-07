@@ -1,7 +1,7 @@
 <template>
     <div class="roomSet">
         <div class="list">
-            <div class="list-item" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
+            <div class="list-item" :id="`list-item-${index}`" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
         <div class="set-container">
             <div class="item">
@@ -67,6 +67,20 @@
                 </div>
             </div>
             <div class="item">
+                <div class="port-container">
+                    <div class="label">地面端口 :</div>
+                    <div class="input-container">
+                        <input v-model="cluster.master_server_port">
+                    </div>
+                </div>
+                <div class="port-container">
+                    <div class="label">洞穴端口 :</div>
+                    <div class="input-container">
+                        <input v-model="cluster.caves_server_port">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
                 <label class="submit" @click="handleSetRoom">保存</label>
             </div>
         </div>
@@ -74,7 +88,6 @@
     </div>
 </template>
 <script>
-import { isVNode } from 'vue';
 import { getRoom,setRoom } from '../api/cluserRequest'
 import { useClusterStore} from '../store/clusterStore'
 import 'remixicon/fonts/remixicon.css'
@@ -93,16 +106,17 @@ export default{
                 pvp:false,
                 pause_when_empty:true,
                 vote_enabled:true,
-                vote_kick_enabled:true
+                vote_kick_enabled:true,
+                master_server_port:null,
+                caves_server_port:null,
             },
             clusters:null,
-            index:null,
             clusterStore:useClusterStore(),
         }
     },
     methods:{
         handleGetRoom(){
-            getRoom(this.clusters[this.index].cluster_name).then(response=>{
+            getRoom(this.clusterStore.clusters[this.clusterStore.index].cluster_name).then(response=>{
                 this.cluster = response.data;
             })
         },
@@ -111,13 +125,8 @@ export default{
                 console.log(response.data)
             })  
         },
-        handlePost(){
-            post(this.data).then(response=>{
-
-            })
-        },
         changeIndex(index){
-            this.index = index;
+            this.clusterStore.setIndex(Number(index));
             this.handleGetRoom();
         },
         changePlayers(num){
@@ -137,7 +146,10 @@ export default{
         }
     },
     mounted(){
-
+        this.handleGetRoom();
+    },
+    activated(){
+        this.clusterStore.refreshIndex();
     }
 }
 </script>
@@ -149,32 +161,42 @@ export default{
 }
 .list{
     position: absolute;
-    width: 10%;
-    height: calc(80% + 5vh);
+    width: calc(13% - 1.2vh);
+    height: calc(90% + 5.5vh - 1.2vh);
     left: 2%;
-    top: 3vh;
-    /* background-color: rgb(32,28,24); */
+    top: 0vh;
+    background-color: rgba(110, 81, 47, 0.6);
+    border: 0.6vh solid rgb(118,82,44);
     overflow: auto;
 }
 .list-item{
-    width: 100%;
+    width: 90%;
+
     height: 12.5%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3vh;
-    margin-bottom: 1vh;
-    background-color: rgb(46,37,27);
-
+    margin: 1vh 5%;
+    cursor: pointer;
+    border-radius: 1vh;
+}
+.list-item.selected{
+    background-color: rgb(110,81,47);
+    color: rgb(224,173,71);
+}
+.list-item:hover{
+    background-color: rgb(110,81,47);
+    color: rgb(224,173,71);
 }
 .set-container{
     height: calc(100% - 3vh);
-    padding-top: 3vh;
+    padding-top: 0vh;
     width: 100%;
 }
 .item{
     height: 10%;
-    margin: 0 15%;
+    margin: 0 17%;
     margin-bottom: 1vh;
     width: 80%;
     display: flex;
@@ -262,5 +284,12 @@ input:focus{
 .count{
     margin: 0 6vw;
     font-size: 3.5vh;
+}
+.port-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    /* width: 30%; */
 }
 </style>
