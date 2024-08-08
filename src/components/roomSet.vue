@@ -116,6 +116,8 @@ export default{
     },
     methods:{
         handleGetRoom(){
+            if(!this.clusterStore.clusters[this.clusterStore.index])
+                return;
             getRoom(this.clusterStore.clusters[this.clusterStore.index].cluster_name).then(response=>{
                 this.cluster = response.data;
             })
@@ -149,6 +151,8 @@ export default{
         this.handleGetRoom();
     },
     activated(){
+        if(!this.clusterStore.clusters[this.clusterStore.index])
+            return;
         this.clusterStore.refreshIndex();
     }
 }

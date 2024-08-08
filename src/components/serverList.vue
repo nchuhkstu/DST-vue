@@ -25,6 +25,7 @@
 import server from '../components/server.vue'
 import { get,add,Delete } from '../api/cluserRequest'
 import { useClusterStore} from '../store/clusterStore'
+import { useTipStore } from '../store/tipStore';
 export default{
     name:'serverList',
     components:{
@@ -33,6 +34,7 @@ export default{
     data(){
         return{
             clusterStore:useClusterStore(),
+            tipStore:useTipStore(),
         }
     },
     methods:{
@@ -45,7 +47,11 @@ export default{
         },
         handleAdd(){
             add().then(response=>{
-                this.clusterStore.clusters.push(response.data)
+                if(response.data.status=="error"){
+                    this.tipStore.showTip(response.data.message);
+                    return
+                }
+                this.clusterStore.clusters.push(response.data.message)
             })
         },
         handleDelete(cluster_name){

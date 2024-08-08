@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="log-mid" id="log">
-                <div class="log-line"v-for="text in logStore.log[clusterStore.clusters[clusterStore.index].cluster_name]">
+                <div class="log-line" v-if="clusterStore.clusters[clusterStore.index]" v-for="text in logStore.log[clusterStore.clusters[clusterStore.index].cluster_name]">
                     [<label class="log-time">{{ text.time }}</label>]:
                     <label class="log-message">{{ text.message }}</label>
                 </div>
@@ -76,6 +76,8 @@ export default{
             }
         },
         getLog(){
+            if(!this.clusterStore.clusters[this.clusterStore.index])
+                return;
             const cluster_name = this.clusterStore.clusters[this.clusterStore.index].cluster_name;
             getLog(cluster_name).then(response=>{
                 this.logStore.setLog(cluster_name,response.data);
@@ -102,6 +104,8 @@ export default{
         this.getLog();
     },
     activated(){
+        if(!this.clusterStore.clusters[this.clusterStore.index])
+            return;
         this.clusterStore.refreshIndex();
     }
 }
