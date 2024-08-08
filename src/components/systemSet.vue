@@ -25,14 +25,16 @@
 </template>
 <script>
 import { get,post } from '../api/systemRequest'
+import { useTipStore } from '../store/tipStore'
 export default{
     name:'systemSet',
     data(){
         return{
             data:{
                 cluster_path:'',
-                exe_path:''
-            }
+                exe_path:'',
+            },
+            tipStore:useTipStore(),
         }
     },
     methods:{
@@ -43,7 +45,9 @@ export default{
         },
         handlePost(){
             post(this.data).then(response=>{
-
+                if(response.data.status == "ok"){
+                    this.tipStore.showTip(response.data.message);
+                }
             })
         }
     },

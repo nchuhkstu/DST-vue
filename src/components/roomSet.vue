@@ -90,6 +90,7 @@
 <script>
 import { getRoom,setRoom } from '../api/cluserRequest'
 import { useClusterStore} from '../store/clusterStore'
+import { useTipStore } from '../store/tipStore'
 import 'remixicon/fonts/remixicon.css'
 export default{
     name:'roomSet',
@@ -112,6 +113,7 @@ export default{
             },
             clusters:null,
             clusterStore:useClusterStore(),
+            tipStore:useTipStore(),
         }
     },
     methods:{
@@ -124,7 +126,9 @@ export default{
         },
         handleSetRoom(){
             setRoom({"cluster":this.cluster}).then(response=>{
-                console.log(response.data)
+                if(response.data.status=="ok"){
+                    this.tipStore.showTip(response.data.message);
+                }
             })  
         },
         changeIndex(index){

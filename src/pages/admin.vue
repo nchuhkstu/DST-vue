@@ -18,7 +18,7 @@
                     <div class="navigation-icon"><i class="ri-home-4-line"></i></div>
                     <div class="navigation-font">房间设置</div>
                 </div>
-                <div class="navigation" id="worldSet" @click="changeComponent('worldSet')">
+                <!-- <div class="navigation" id="worldSet" @click="changeComponent('worldSet')">
                     <div class="navigation-icon"><i class="ri-earth-line"></i></div>
                     <div class="navigation-font">世界设置</div>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="navigation" id="resourceUsage" @click="changeComponent('resourceUsage')">
                     <div class="navigation-icon"><i class="ri-line-chart-line"></i></div>
                     <div class="navigation-font">资源占用</div>
-                </div>
+                </div> -->
                 <div class="navigation" id="systemSet" @click="changeComponent('systemSet')">
                     <div class="navigation-icon"><i class="ri-settings-line"></i></div>
                     <div class="navigation-font">系统设置</div>
