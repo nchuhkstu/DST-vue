@@ -23,3 +23,9 @@ export function backtrack(cluster_name,days){
         method: 'get'
     })
 }
+export function customCommand(cluster_name,command){
+    return request({
+        url:`/server/custom_command/${cluster_name}/${command}`,
+        method: 'get'
+    })
+}

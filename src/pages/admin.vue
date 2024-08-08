@@ -1,5 +1,6 @@
 <template>
     <div id="admin" class="admin">
+        <div class="tip" id="tip">{{tipStore.tip}}</div>
         <div class="admin-left">
             <div class="logo">
                 饥荒联机版服务器看板
@@ -38,7 +39,7 @@
         <div class="admin-right">
             <div class="attention-container">
                 <div class="attention">未经授权,禁止商用</div>
-                <div class="attention">面板版本 : 0.0.1</div>
+                <div class="attention">面板版本 : 1.1.0</div>
                 <div class="attention">游戏版本:624447</div>
                 <div class="link"></div>
             </div>
@@ -61,6 +62,7 @@ import systemSet from '../components/systemSet.vue'
 import 'remixicon/fonts/remixicon.css'
 import io from 'socket.io-client';
 import { useLogStore } from '../store/logStore'
+import { useTipStore } from '../store/tipStore'
 export default{
     components:{
         serverList,
@@ -76,6 +78,7 @@ export default{
             activeComponent:'serverList',
             socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
             logStore:useLogStore(),
+            tipStore:useTipStore(),
         }
     },
     methods:{
@@ -108,12 +111,28 @@ export default{
     background-color: rgba(87, 65, 40, 0.6);
     color: rgb(201,173,117);
 }
+.tip{
+    display: flex;
+    position: fixed;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1vh 1vw;
+    z-index: 9999;
+    color: black;
+    background-color: rgb(242,222,155);
+    top: 20%;
+    font-size: 2vh;
+    border-radius: 1vh;
+    left: 50%;
+    /* transform: translateX(-50%); */
+}
 .admin-left{
     height: 100%;
     width: 15%;
     background-color: rgba(110, 81, 47, 0.6);
-    border-top-left-radius: 1vh;
-    border-bottom-left-radius: 1vh;
+    border-top-left-radius: 0.5vh;
+    border-bottom-left-radius: 0.5vh;
 }
 .admin-right{
     height: 100%;
@@ -176,17 +195,28 @@ export default{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2vh;
-    background-color:rgb(39,132,255);
+    font-size: 1.75vh;
+    background-color:rgb(228,196,118);
     border-radius: 1vh;
-    color: white;
+    color: black;
 }
 .attention:first-child{
-    background-color: rgb(255,85,0);
-    margin-left: 0.5vw;
+    background-color: rgb(228,196,118);
+    margin-left: 1%;
 }
 .function{
     height: calc(100% - 10vh);
     width: 100%;
+}
+@keyframes slideOutTop {
+    0% {
+        transform: translateY(-400%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+.slide-out-top {
+    animation: slideOutTop 1s ease forwards;
 }
 </style>

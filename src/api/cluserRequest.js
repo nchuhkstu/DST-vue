@@ -24,6 +24,12 @@ export function setRoom(data){
         data: data
     })
 }
+export function getLog(cluster_name){
+    return request({
+        url:`/cluster/getLog/${cluster_name}`,
+        method: 'get',
+    })
+}
 export function Delete(cluster_name){
     return request({
         url:`/cluster/${cluster_name}`,

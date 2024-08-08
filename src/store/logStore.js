@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-
 export const useLogStore = defineStore('log', {
   state: () => ({
     log:{ }
@@ -14,11 +13,14 @@ export const useLogStore = defineStore('log', {
             container.scrollTop = container.scrollHeight - container.clientHeight;
         }
     },
-    decrement() {
-      this.count--
-    }
+    setLog(cluster_name,data){
+      if(this.log[cluster_name] == null)
+        this.log[cluster_name] = [];
+      this.log[cluster_name] = data;
+    },
+
   },
   getters: {
-    doubleCount: (state) => state.count * 2
+
   }
 })

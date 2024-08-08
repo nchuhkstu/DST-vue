@@ -7,13 +7,13 @@
             <div class="item">
                 <div class="label">名称 :</div>
                 <div class="input-container">
-                    <input v-model="cluster.cluster_name">
+                    <input type="text" v-model="cluster.cluster_name">
                 </div>
             </div>
             <div class="item">
                 <div class="label">描述 :</div>
                 <div class="input-container">
-                    <input v-model="cluster.cluster_description">
+                    <input type="text" v-model="cluster.cluster_description">
                 </div>
             </div>
             <div class="item">
@@ -49,7 +49,7 @@
             <div class="item">
                 <div class="label">密码 :</div>
                 <div class="input-container">
-                    <input v-model="cluster.cluster_password">
+                    <input type="text" v-model="cluster.cluster_password">
                 </div>
             </div>
             <div class="item">
@@ -70,13 +70,13 @@
                 <div class="port-container">
                     <div class="label">地面端口 :</div>
                     <div class="input-container">
-                        <input v-model="cluster.master_server_port">
+                        <input type="text" v-model="cluster.master_server_port">
                     </div>
                 </div>
                 <div class="port-container">
                     <div class="label">洞穴端口 :</div>
                     <div class="input-container">
-                        <input v-model="cluster.caves_server_port">
+                        <input type="text" v-model="cluster.caves_server_port">
                     </div>
                 </div>
             </div>
@@ -163,7 +163,7 @@ export default{
     position: absolute;
     width: calc(13% - 1.2vh);
     height: calc(90% + 5.5vh - 1.2vh);
-    left: 2%;
+    left: 1%;
     top: 0vh;
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
@@ -171,8 +171,7 @@ export default{
 }
 .list-item{
     width: 90%;
-
-    height: 12.5%;
+    height: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -196,7 +195,7 @@ export default{
 }
 .item{
     height: 10%;
-    margin: 0 17%;
+    margin: 0 15%;
     margin-bottom: 1vh;
     width: 80%;
     display: flex;
@@ -236,7 +235,7 @@ input[type="checkbox"] {
     margin-right: 1vw;
     background-color: rgb(46,37,27);
 }
-input:not([type="radio"]):not([type="checkbox"]) {
+input[type="text"] {
     height: calc(60% - 1vh);
     width: calc(100% - 1vw);
     outline: none;
@@ -246,16 +245,17 @@ input:not([type="radio"]):not([type="checkbox"]) {
     background-color: rgb(247,236,211);
     border: 0.3vh solid rgb(118,82,44);
 }
+input[type="text"]:hover {
+    background-color: rgb(206,173,104);
+}
+
+input[type="text"]:focus {
+    background-color: rgb(231,203,145);
+}
 input:invalid {
     box-shadow: none;
     border-color: inherit;
     background-color: inherit;
-}
-input:hover{
-    background-color: rgb(206,173,104);
-}
-input:focus{
-    background-color: rgb(231,203,145);
 }
 .submit{
     padding: 0.5vh 2vw;
@@ -288,8 +288,8 @@ input:focus{
 .port-container{
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     height: 100%;
-    /* width: 30%; */
+    width: 40%;
 }
 </style>

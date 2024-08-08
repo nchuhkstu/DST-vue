@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-
 export const useClusterStore = defineStore('cluster', {
   state: () => ({
     clusters:[],
@@ -15,12 +14,15 @@ export const useClusterStore = defineStore('cluster', {
         item.classList.remove('selected');
       });
       document.getElementById("list-item-" + this.index).classList.add("selected");
+      requestAnimationFrame(()=>{
+        var container = document.getElementById('log');
+        if (container) {
+            container.scrollTop = container.scrollHeight - container.clientHeight;
+        }
+      })
     },
-    decrement() {
-      this.count--
-    }
   },
   getters: {
-    doubleCount: (state) => state.count * 2
+
   }
 })

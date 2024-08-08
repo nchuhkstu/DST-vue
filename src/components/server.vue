@@ -20,27 +20,49 @@
 </template>
 <script>
 import { start,stop,save,backtrack } from '../api/serverRequest'
+import { useTipStore } from '../store/tipStore';
+import { useClusterStore } from '../store/clusterStore';
 export default{
     name:'server',
     props:{
+        index:Number,
         server:Object
     },
     data(){
         return{
-
+            tipStore:useTipStore(),
+            clusterStore:useClusterStore(),
         }
     },
     methods:{
         handleStart(){
+            if(this.clusterStore.clusters[this.index].status == "运行中"){
+                this.tipStore.showTip("服务器正在运行中");
+                return;
+            }
             start(this.server.cluster_name).then(response=>{
-                console.log(response.data);
+                this.tipStore.showTip(response.data.message);
+                if(response.data.status=="ok"){
+                    this.clusterStore.clusters[this.index].status = "运行中";
+                }
+                else{
+                    this.clusterStore.clusters[this.index].status = "启动失败";
+                }
             })
         },
         handleStop(){
-            stop(this.server.cluster_name).then()
+            stop(this.server.cluster_name).then(response=>{
+                this.tipStore.showTip(response.data.message);
+            })
         },
         handleSave(){
-            save(this.server.cluster_name).then()
+            if(this.clusterStore.clusters[this.index].status != "运行中"){
+                this.tipStore.showTip("服务器尚未运行");
+                return;
+            }
+            save(this.server.cluster_name).then(response=>{
+                this.tipStore.showTip(response.data.message);
+            })
         },
         handleDelete(){
             this.$emit('delete',this.server.cluster_name);
@@ -56,12 +78,13 @@ export default{
     height: 11.11%;
     width: 100%;
     display: flex;
-    border-top: 0.1vh solid black;
+    border-top: 0.3vh solid rgb(118,82,44);
 }
 .server:first-child{
-    border-top: 0.1vh solid black;
+    border-top: none;
 }
 .item{
+    font-size: 2vh;
     height: 100%;
     width: 10%;
     display: flex;
@@ -77,5 +100,6 @@ export default{
 }
 .operation{
     margin: 0 0.75vw;
+    cursor: pointer;
 }
 </style>
