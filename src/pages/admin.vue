@@ -25,11 +25,11 @@
                 <div class="navigation" id="modSet" @click="changeComponent('modSet')">
                     <div class="navigation-icon"><i class="ri-box-3-line"></i></div>
                     <div class="navigation-font">模组设置</div>
-                </div>
+                </div> -->
                 <div class="navigation" id="resourceUsage" @click="changeComponent('resourceUsage')">
                     <div class="navigation-icon"><i class="ri-line-chart-line"></i></div>
                     <div class="navigation-font">资源占用</div>
-                </div> -->
+                </div>
                 <div class="navigation" id="systemSet" @click="changeComponent('systemSet')">
                     <div class="navigation-icon"><i class="ri-settings-line"></i></div>
                     <div class="navigation-font">系统设置</div>
@@ -63,6 +63,7 @@ import 'remixicon/fonts/remixicon.css'
 import io from 'socket.io-client';
 import { useLogStore } from '../store/logStore'
 import { useTipStore } from '../store/tipStore'
+import { useSystemStore } from '../store/systemStore'
 export default{
     components:{
         serverList,
@@ -79,6 +80,7 @@ export default{
             socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
             logStore:useLogStore(),
             tipStore:useTipStore(),
+            systemStore:useSystemStore(),
         }
     },
     methods:{
@@ -92,6 +94,10 @@ export default{
         init(){
             this.socketio.on('log',(data)=>{
                 this.logStore.addLog(data);
+            })
+            this.socketio.on('system_information',(data)=>{
+                this.systemStore.refreshRunningInformation(data);
+                console.log(this.systemStore.system)
             })
         },
     },

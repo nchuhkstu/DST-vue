@@ -12,3 +12,9 @@ export function post(data){
         data: data
     })
 }
+export function getSystemInfo(){
+    return request({
+        url:'/system/information',
+        method: 'get'
+    })
+}
