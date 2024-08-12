@@ -2,7 +2,9 @@
     <div class="resourceUsage">
         <div class="left" id="left">
             <div class="left-item">
-                <div class="chart-container"></div>
+                <div class="chart-container">
+                    <chart :name="'12'"></chart>
+                </div>
                 <div class="information-container">
                     <div class="title">CPU</div>
                     <div class="information">{{ systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1] }}</div>
@@ -63,7 +65,7 @@
                         <div class="cpu-bottom-left-line">
                             <div class="cpu-bottom-left-line-item">
                                 <div class="item-top">正常运行时间</div>
-                                <div class="item-bottom"></div>
+                                <div class="item-bottom">{{ systemStore.system.cpuData.running_time }}</div>
                             </div>
                         </div>
                     </div>
@@ -105,8 +107,12 @@
 <script>
 import { getSystemInfo } from '../api/systemRequest';
 import { useSystemStore } from '../store/systemStore'
+import chart from './chart.vue'
 export default{
     name:'resourceUsage',
+    components:{
+        chart,
+    },
     data(){
         return{
             is_resize:false,
