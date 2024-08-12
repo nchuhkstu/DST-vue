@@ -3,7 +3,7 @@
         <div class="left" id="left">
             <div class="left-item">
                 <div class="chart-container">
-                    <chart :name="'12'"></chart>
+                    <chart :name="'cpu_' + Object.keys(this.systemStore.cpuData.usage.length-1)"></chart>
                 </div>
                 <div class="information-container">
                     <div class="title">CPU</div>
@@ -35,7 +35,9 @@
                     <div class="cpu-title-right">{{ cpu_information_static.name }}</div>
                 </div>
                 <div class="cpu-description">60秒内的利用率 %</div>
-                <div class="cpu-charts"></div>
+                <div class="cpu-charts">
+                    <chart v-for="index in Object.keys(this.systemStore.cpuData.usage).length-1" :name="'cpu_' + index"></chart>
+                </div>
                 <div class="cpu-bottom">
                     <div class="cpu-bottom-left">
                         <div class="cpu-bottom-left-line">
@@ -250,6 +252,8 @@ export default{
 .cpu-charts{
     height: 57%;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 .cpu-bottom{
     height: 30%;

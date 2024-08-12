@@ -18,25 +18,27 @@ export const useSystemStore = defineStore('system', {
             pool_not_paged:'',
         }
     },
-    cpu_Usage:null
+    charts_data:null
   }),
   actions: {
     refreshRunningInformation(data) {
         this.system.cpuData = data.cpuData;
         this.system.memoryData = data.memoryData;
-        if(!this.cpu_Usage){
-          this.cpu_Usage = {};
+        if(!this.charts_data){
+          this.charts_data = {};
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){
-            this.cpu_Usage[`${i}`] = Array(59).fill(null).concat(0);
+            this.charts_data[`cpu_ + ${i}`] = Array(59).fill(null).concat(0);
+            this.charts_data[`cpu_new_ + ${i}`] = false;
           }
         }
         else{
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){
-            this.cpu_Usage[`${i}`].push(data.cpuData.usage[`${i}`]);
-            this.cpu_Usage[`${i}`].shift();
+            this.charts_data[`cpu_ + ${i}`].push(data.cpuData.usage[`${i}`]);
+            this.charts_data[`cpu_ + ${i}`].shift();
+            this.charts_data[`cpu_new_ + ${i}`] = true;
           }
         }
-        console.log(this.cpu_Usage)
+        console.log(this.charts_data)
     },
 
   },

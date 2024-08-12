@@ -16,7 +16,7 @@ export default{
     },
     data(){
         return{
-            totalCpu: useSystemStore().cpu_Usage[`${this.name}`],
+            totalCpu: useSystemStore().charts_data[`${this.name}`],
             chart:null,
             init:false,
             systemStore:useSystemStore(),
@@ -77,12 +77,14 @@ export default{
                 };
                 this.chart.setOption(option);
             }
+            this.systemStore.charts_data[`cpu_new_ + ${this.name}`] == false;
         },
     },
     mounted(){
         this.initChart();
         this.draw();
         this.intervalId = setInterval(() => {
+            if(this.systemStore.charts_data[`cpu_new_ + ${this.name}`] == true)
             this.draw();
         }, 1000); // 每秒执行一次 draw
     },
