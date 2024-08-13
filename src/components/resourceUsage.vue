@@ -3,18 +3,20 @@
         <div class="left" id="left">
             <div class="left-item">
                 <div class="chart-container">
-                    <chart :name="'cpu_' + Object.keys(this.systemStore.cpuData.usage.length-1)"></chart>
+                    <chart :name="'cpu_' + (Object.keys(systemStore.system.cpuData.usage).length-1)"></chart>
                 </div>
                 <div class="information-container">
                     <div class="title">CPU</div>
-                    <div class="information">{{ systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1] }}</div>
+                    <div class="information">{{ systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1] + '%' }} {{ parseFloat(systemStore.system.cpuData.frequency).toFixed(2) + ' GHZ' }}</div>
                 </div>
             </div>
             <div class="left-item">
-                <div class="chart-container"></div>
+                <div class="chart-container">
+                    <chart :name="'memory_'"></chart>
+                </div>
                 <div class="information-container">
                     <div class="title">内存</div>
-                    <div class="information"></div>
+                    <div class="information">{{ parseFloat((systemStore.system.memoryData.total - systemStore.system.memoryData.available)/1024).toFixed(1) + '/' + parseFloat(systemStore.system.memoryData.total/1024).toFixed(1) + ' GB (' + parseFloat((systemStore.system.memoryData.total - systemStore.system.memoryData.available) / systemStore.system.memoryData.total * 100).toFixed(0) + '%)' }}</div>
                 </div>
             </div>
             <div class="left-item">
@@ -34,9 +36,14 @@
                     <div class="cpu-title-left">CPU</div>
                     <div class="cpu-title-right">{{ cpu_information_static.name }}</div>
                 </div>
-                <div class="cpu-description">60秒内的利用率 %</div>
+                <div class="cpu-description">
+                    <div class="cpu-description-left">60秒内的利用率 %</div>
+                    <div class="cpu-description-right">100%</div>
+                </div>
                 <div class="cpu-charts">
-                    <chart v-for="index in Object.keys(this.systemStore.cpuData.usage).length-1" :name="'cpu_' + index"></chart>
+                    <div class="cpu-chart" v-if="Object.keys(this.systemStore.system.cpuData.usage)" v-for="index in Object.keys(this.systemStore.system.cpuData.usage).length-1">
+                        <chart :name="'cpu_' + (index -1)" :xline="true" :yline="true"></chart>
+                    </div>
                 </div>
                 <div class="cpu-bottom">
                     <div class="cpu-bottom-left">
@@ -103,6 +110,54 @@
                     </div>
                 </div>
             </div>
+            <div class="memory" v-if="active=='memory'">
+                <div class="memory-title">
+                    <div class="memory-title-left">内存</div>
+                    <div class="memory-title-right">32G</div>
+                </div>
+                <div class="memory-description">
+                    <div class="memory-description-left">内存使用量</div>
+                    <div class="memory-description-right">{{ parseFloat(systemStore.system.memoryData.total / 1024).toFixed(1) + 'GB' }}</div>
+                </div>
+                <div class="memory-charts">
+
+                </div>
+                <div class="memory-bottom">
+                    <div class="memory-bottom-left">
+                        <div class="memory-bottom-left-line">
+                            <div class="memory-bottom-left-line-item">
+                                <div class="item-top">使用中(已压缩)</div>
+                                <div class="item-bottom">{{ parseFloat((systemStore.system.memoryData.total - systemStore.system.memoryData.available)/1024).toFixed(1) + ' GB(' + parseFloat(systemStore.system.memoryData.available_2 /1024).toFixed(1) + ' GB)'}}</div>
+                            </div>
+                            <div class="memory-bottom-left-line-item">
+                                <div class="item-top">可用</div>
+                                <div class="item-bottom">{{ parseFloat(systemStore.system.memoryData.available / 1024).toFixed(1) + 'GB' }}</div>
+                            </div>
+                        </div>
+                        <div class="memory-bottom-left-line">
+                            <div class="memory-bottom-left-line-item">
+                                <div class="item-top">已提交</div>
+                                <div class="item-bottom">{{ parseFloat(systemStore.system.memoryData.commited / 1024).toFixed(1) +'/' + parseFloat(systemStore.system.memoryData.commited /1024 / systemStore.system.memoryData.commited_percent * 100).toFixed(1) + 'GB' }}</div>
+                            </div>
+                            <div class="memory-bottom-left-line-item">
+                                <div class="item-top">已缓存</div>
+                                <div class="item-bottom"></div>
+                            </div>
+                        </div>
+                        <div class="memory-bottom-left-line">
+                            <div class="memory-bottom-left-line-item">
+                                <div class="item-top">分页缓冲池</div>
+                                <div class="item-bottom">{{ parseFloat(systemStore.system.memoryData.pool_paged).toFixed(0) + 'MB' }}</div>
+                            </div>
+                            <div class="memory-bottom-left-line-item">
+                                <div class="item-top">非分页缓冲池</div>
+                                <div class="item-bottom">{{ parseFloat(systemStore.system.memoryData.pool_not_paged).toFixed(0) + 'MB' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="memory-bottom-right"></div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -135,7 +190,6 @@ export default{
         handleGetSystemInfo(){
             getSystemInfo().then(response=>{
                 this.cpu_information_static = response.data;
-                console.log(this.cpu_information_static)
             })
         },
         startResize(){
@@ -185,12 +239,13 @@ export default{
 .chart-container{
     height: 80%;
     width: 6vw;
+    margin-left: 1vw;
     background-color: black;
 }
 .information-container{
     height: 80%;
-    width: 8vw;
-    margin-left: 1vw;
+    width: calc(100% - 7vw);
+    margin-left: 0.5vw;
 }
 .title{
     height: 50%;
@@ -201,6 +256,9 @@ export default{
 .information{
     height: 50%;
     width: 100%;
+    line-height: 100%;
+    font-size: 1.75vh;
+    overflow:hidden;
 }
 .mid{
     width: 0.4vh;
@@ -248,12 +306,23 @@ export default{
 .cpu-description{
     height: 3%;
     width: 100%;
+    display: flex;
+}
+.cpu-description-right{
+    margin-left: auto;
 }
 .cpu-charts{
-    height: 57%;
+    padding-top: 0.5%;
+    padding-bottom: 2.5%;
+    height: 54%;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    gap: 0.5vh;
+}
+.cpu-chart{
+    height: calc(33% - 0.33vh);
+    width: calc(25% - 0.375vh);
 }
 .cpu-bottom{
     height: 30%;
@@ -262,7 +331,7 @@ export default{
 }
 .cpu-bottom-left{
     height: 100%;
-    width: 40%;
+    width: 35%;
 }
 .cpu-bottom-left-line{
     display: flex;
@@ -271,7 +340,15 @@ export default{
 }
 .cpu-bottom-left-line-item{
     height: 100%;
-    width: 100%;
+    margin-right: 2vw;
+}
+.item-top{
+    font-size: 2vh;
+    font-weight: lighter;
+}
+.item-bottom{
+    font-size: 3vh;
+    font-weight: 550;
 }
 .cpu-bottom-right{
     height: 100%;
@@ -285,10 +362,65 @@ export default{
 .cpu-bottom-right-line-left{
     height: 100%;
     width: 40%;
+    font-size: 2vh;
+    font-weight: lighter;
 }
 .cpu-bottom-right-line-right{
     height: 100%;
     width: 60%;
+    font-size: 2vh;
 }
-
+.memory{
+    height: calc(100% - 2vh);
+    width: calc(100% - 2vw);
+    padding: 1vh 1vw;
+}
+.memory-title{
+    display: flex;
+    height: 10%;
+    width: 100%;
+}
+.memory-title-left{
+    font-size: 5vh;
+    height: 100%;
+}
+.memory-title-right{
+    font-size: 3vh;
+    height: 100%;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.memory-description{
+    height: 3%;
+    width: 100%;
+    display: flex;
+}
+.memory-description-right{
+    margin-left: auto;
+}
+.memory-charts{
+    padding-top: 0.5%;
+    padding-bottom: 2.5%;
+    height: 54%;
+    width: 100%;
+}
+.memory-bottom{
+    height: 30%;
+    width: 100%;
+    display: flex;
+}
+.memory-bottom-left{
+    height: 100%;
+    width: 40%;
+}
+.memory-bottom-left-line{
+    display: flex;
+    height: 33.3%;
+    width: 100%;
+}
+.memory-bottom-left-line-item{
+    height: 100%;
+    margin-right: 2vw;
+}
 </style>

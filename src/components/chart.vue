@@ -77,15 +77,15 @@ export default{
                 };
                 this.chart.setOption(option);
             }
-            this.systemStore.charts_data[`cpu_new_ + ${this.name}`] == false;
+            this.systemStore.charts_data[`${this.name}` + '_new'] == false;
         },
     },
     mounted(){
         this.initChart();
         this.draw();
         this.intervalId = setInterval(() => {
-            if(this.systemStore.charts_data[`cpu_new_ + ${this.name}`] == true)
-            this.draw();
+            if(this.systemStore.charts_data[`${this.name}` + '_new'] == true)
+                this.draw();
         }, 1000); // 每秒执行一次 draw
     },
     activated(){

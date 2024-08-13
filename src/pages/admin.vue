@@ -97,7 +97,7 @@ export default{
             })
             this.socketio.on('system_information',(data)=>{
                 this.systemStore.refreshRunningInformation(data);
-                console.log(this.systemStore.system)
+                console.log(data)
             })
         },
     },

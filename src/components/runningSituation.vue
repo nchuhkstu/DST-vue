@@ -179,7 +179,7 @@ export default{
 .log-line{
     width: 100%;
     overflow-wrap: break-word;
-    word-wrap: break-word;
+    word-break:break-all;
     color: rgb(255,215,0);
 }
 .log-time{

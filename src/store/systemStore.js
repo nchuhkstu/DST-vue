@@ -13,7 +13,9 @@ export const useSystemStore = defineStore('system', {
         memoryData:{
             available:'',
             available_2:'',
+            total:'',
             commited:'',
+            commited_percent:'',
             pool_paged:'',
             pool_not_paged:'',
         }
@@ -27,18 +29,22 @@ export const useSystemStore = defineStore('system', {
         if(!this.charts_data){
           this.charts_data = {};
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){
-            this.charts_data[`cpu_ + ${i}`] = Array(59).fill(null).concat(0);
-            this.charts_data[`cpu_new_ + ${i}`] = false;
+            this.charts_data['cpu_' + `${i}`] = Array(59).fill(null).concat(0);
+            this.charts_data['cpu_' + `${i}` + '_new'] = false;
           }
+          this.charts_data['memory_'] = Array(59).fill(null).concat(0);
+          this.charts_data['memory__new'] = false;
         }
         else{
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){
-            this.charts_data[`cpu_ + ${i}`].push(data.cpuData.usage[`${i}`]);
-            this.charts_data[`cpu_ + ${i}`].shift();
-            this.charts_data[`cpu_new_ + ${i}`] = true;
+            this.charts_data['cpu_' + `${i}`].push(data.cpuData.usage[`${i}`]);
+            this.charts_data['cpu_' + `${i}`].shift();
+            this.charts_data['cpu_' + `${i}` + '_new'] = true;
           }
+          this.charts_data['memory_'].push((data.memoryData.total - data.memoryData.available)/data.memoryData.total * 100);
+          this.charts_data['memory_'].shift();
+          this.charts_data['memory__new'] = true;
         }
-        console.log(this.charts_data)
     },
 
   },
