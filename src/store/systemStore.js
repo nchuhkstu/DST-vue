@@ -20,7 +20,8 @@ export const useSystemStore = defineStore('system', {
             pool_not_paged:'',
         }
     },
-    charts_data:null
+    charts_data:null,
+    cpu_information_static:{},
   }),
   actions: {
     refreshRunningInformation(data) {
@@ -34,6 +35,8 @@ export const useSystemStore = defineStore('system', {
           }
           this.charts_data['memory_'] = Array(59).fill(null).concat(0);
           this.charts_data['memory__new'] = false;
+          this.charts_data['memory_2'] = Array(59).fill(null).concat(0);
+          this.charts_data['memory_2_new'] = false;
         }
         else{
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){
@@ -44,6 +47,9 @@ export const useSystemStore = defineStore('system', {
           this.charts_data['memory_'].push((data.memoryData.total - data.memoryData.available)/data.memoryData.total * 100);
           this.charts_data['memory_'].shift();
           this.charts_data['memory__new'] = true;
+          this.charts_data['memory_2'].push((data.memoryData.total - data.memoryData.available)/data.memoryData.total * 100);
+          this.charts_data['memory_2'].shift();
+          this.charts_data['memory_2_new'] = true;
         }
     },
 

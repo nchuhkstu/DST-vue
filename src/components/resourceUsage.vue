@@ -1,7 +1,7 @@
 <template>
     <div class="resourceUsage">
         <div class="left" id="left">
-            <div class="left-item">
+            <div class="left-item" @click="changeActive('cpu')">
                 <div class="chart-container">
                     <chart :name="'cpu_' + (Object.keys(systemStore.system.cpuData.usage).length-1)"></chart>
                 </div>
@@ -10,7 +10,7 @@
                     <div class="information">{{ systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1] + '%' }} {{ parseFloat(systemStore.system.cpuData.frequency).toFixed(2) + ' GHZ' }}</div>
                 </div>
             </div>
-            <div class="left-item">
+            <div class="left-item" @click="changeActive('memory')">
                 <div class="chart-container">
                     <chart :name="'memory_'"></chart>
                 </div>
@@ -34,7 +34,7 @@
             <div class="cpu" v-if="active=='cpu'">
                 <div class="cpu-title">
                     <div class="cpu-title-left">CPU</div>
-                    <div class="cpu-title-right">{{ cpu_information_static.name }}</div>
+                    <div class="cpu-title-right">{{ systemStore.cpu_information_static.name }}</div>
                 </div>
                 <div class="cpu-description">
                     <div class="cpu-description-left">60秒内的利用率 %</div>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="cpu-charts">
                     <div class="cpu-chart" v-if="Object.keys(this.systemStore.system.cpuData.usage)" v-for="index in Object.keys(this.systemStore.system.cpuData.usage).length-1">
-                        <chart :name="'cpu_' + (index -1)" :xline="true" :yline="true"></chart>
+                        <chart :ref="'cpu_' + (index-1)" :name="'cpu_' + (index -1)" :xline="true" :yline="true"></chart>
                     </div>
                 </div>
                 <div class="cpu-bottom">
@@ -81,7 +81,7 @@
                     <div class="cpu-bottom-right">
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">基准速度:</div>
-                            <div class="cpu-bottom-right-line-right">{{ cpu_information_static.basic_frequency }}</div>
+                            <div class="cpu-bottom-right-line-right">{{ systemStore.cpu_information_static.basic_frequency }}</div>
                         </div>
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">插槽:</div>
@@ -89,23 +89,23 @@
                         </div>
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">内核:</div>
-                            <div class="cpu-bottom-right-line-right">{{ cpu_information_static.core_num }}</div>
+                            <div class="cpu-bottom-right-line-right">{{ systemStore.cpu_information_static.core_num }}</div>
                         </div>
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">逻辑处理器:</div>
-                            <div class="cpu-bottom-right-line-right">{{ cpu_information_static.core_num_logical }}</div>
+                            <div class="cpu-bottom-right-line-right">{{ systemStore.cpu_information_static.core_num_logical }}</div>
                         </div>
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">虚拟化:</div>
-                            <div class="cpu-bottom-right-line-right">{{ cpu_information_static.cpu_virtual }}</div>
+                            <div class="cpu-bottom-right-line-right">{{ systemStore.cpu_information_static.cpu_virtual }}</div>
                         </div>
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">L2缓存:</div>
-                            <div class="cpu-bottom-right-line-right">{{ cpu_information_static.l2_cache_size }}</div>
+                            <div class="cpu-bottom-right-line-right">{{ systemStore.cpu_information_static.l2_cache_size }}</div>
                         </div>
                         <div class="cpu-bottom-right-line">
                             <div class="cpu-bottom-right-line-left">L3缓存:</div>
-                            <div class="cpu-bottom-right-line-right">{{ cpu_information_static.l3_cache_size }}</div>
+                            <div class="cpu-bottom-right-line-right">{{ systemStore.cpu_information_static.l3_cache_size }}</div>
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,17 @@
                     <div class="memory-description-right">{{ parseFloat(systemStore.system.memoryData.total / 1024).toFixed(1) + 'GB' }}</div>
                 </div>
                 <div class="memory-charts">
-
+                    <div class="memory-charts-top">
+                        <chart :name="'memory_2'" :xline="true" :yline="true"></chart>
+                    </div>
+                    <div class="memory-charts-mid">
+                        <div class="memory-charts-mid-line" style="display: flex;">
+                            <div>60秒</div>
+                            <div style="margin-left: auto;">0</div>
+                        </div>
+                        <div class="memory-charts-mid-line" style="display: flex;">内存组合</div>
+                    </div>
+                    <div class="memory-charts-bottom"></div>
                 </div>
                 <div class="memory-bottom">
                     <div class="memory-bottom-left">
@@ -162,7 +172,6 @@
     </div>
 </template>
 <script>
-import { getSystemInfo } from '../api/systemRequest';
 import { useSystemStore } from '../store/systemStore'
 import chart from './chart.vue'
 export default{
@@ -173,24 +182,13 @@ export default{
     data(){
         return{
             is_resize:false,
-            cpu_information_static:{
-                basic_frequency:null,
-                core_num:null,
-                core_num_logical:null,
-                cpu_virtual:null,
-                l2_cache_size:null,
-                l3_cache_size:null,
-                name:null,
-            },
             systemStore:useSystemStore(),
             active:'cpu',
         }
     },
     methods:{
-        handleGetSystemInfo(){
-            getSystemInfo().then(response=>{
-                this.cpu_information_static = response.data;
-            })
+        changeActive(data){
+            this.active = data;
         },
         startResize(){
             this.is_resize = false;
@@ -203,10 +201,10 @@ export default{
             if(this.is_resize){
                 mid.style.width = (e.clientX + mid.style.width) + 'px';
             }
-        }
+        },
     },
     mounted(){
-        this.handleGetSystemInfo();
+
     }
 }
 </script>
@@ -320,10 +318,6 @@ export default{
     flex-wrap: wrap;
     gap: 0.5vh;
 }
-.cpu-chart{
-    height: calc(33% - 0.33vh);
-    width: calc(25% - 0.375vh);
-}
 .cpu-bottom{
     height: 30%;
     width: 100%;
@@ -403,6 +397,10 @@ export default{
     padding-top: 0.5%;
     padding-bottom: 2.5%;
     height: 54%;
+    width: 100%;
+}
+.memory-charts-top{
+    height: 70%;
     width: 100%;
 }
 .memory-bottom{

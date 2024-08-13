@@ -64,6 +64,7 @@ import io from 'socket.io-client';
 import { useLogStore } from '../store/logStore'
 import { useTipStore } from '../store/tipStore'
 import { useSystemStore } from '../store/systemStore'
+import { getSystemInfo } from '../api/systemRequest';
 export default{
     components:{
         serverList,
@@ -91,18 +92,57 @@ export default{
             });
             document.getElementById(component).classList.add('selected');
         },
+        handleGetSystemInfo(){
+            getSystemInfo().then(response=>{
+                this.systemStore.cpu_information_static = response.data;
+                const dynamicStyle = document.createElement('style');
+                if(response.data.core_num_logical==12){
+                    dynamicStyle.textContent = `
+                        .cpu-chart {
+                            height: calc(33% - 0.33vh);
+                            width: calc(25% - 0.375vh);
+                        }
+                    `;
+                }
+                else if(response.data.core_num_logical==16){
+                    dynamicStyle.textContent = `
+                        .cpu-chart {
+                            height: calc(25% - 0.375vh);
+                            width: calc(25% - 0.375vh);
+                        }
+                    `;
+                }
+                else if(response.data.core_num_logical==4){
+                    dynamicStyle.textContent = `
+                        .cpu-chart {
+                            height: calc(50% - 0.75vh);
+                            width: calc(50% - 0.75vh);
+                        }
+                    `;
+                }
+                else if(response.data.core_num_logical==8){
+                    dynamicStyle.textContent = `
+                        .cpu-chart {
+                            height: calc(50% - 0.75vh);
+                            width: calc(25% - 0.375vh);
+                        }
+                    `;
+                }
+                document.head.appendChild(dynamicStyle);
+            })
+        },
         init(){
             this.socketio.on('log',(data)=>{
                 this.logStore.addLog(data);
             })
             this.socketio.on('system_information',(data)=>{
                 this.systemStore.refreshRunningInformation(data);
-                console.log(data)
             })
         },
     },
     mounted(){
         this.init();
+        this.handleGetSystemInfo();
     }
 }
 </script>
