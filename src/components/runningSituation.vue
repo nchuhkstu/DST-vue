@@ -24,10 +24,10 @@
         <div class="resource-container">
             <div class="cpu-container">
                 <div class="cpu">
-                    <cpuUsage :text="'地面cpu占用率'" :progress="60"></cpuUsage>
+                    <cpuUsage :text="'地面cpu占用率'" :progress="parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index].cluster_name]?.['master'] ?? 0).toFixed(0)"></cpuUsage>
                 </div>
                 <div class="cpu">
-                    <cpuUsage :text="'洞穴cpu占用率'"></cpuUsage>
+                    <cpuUsage :text="'洞穴cpu占用率'" :progress="parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index].cluster_name]?.['caves'] ?? 0).toFixed(0)"></cpuUsage>
                 </div>
             </div>
             <div class="memory-container">
@@ -46,6 +46,7 @@ import { useClusterStore} from '../store/clusterStore'
 import { getLog } from '../api/cluserRequest';
 import { customCommand } from '../api/serverRequest';
 import { useTipStore } from '../store/tipStore';
+import { useSystemStore } from '../store/systemStore'
 export default{
     name:'runningSituation',
     components:{
@@ -58,6 +59,7 @@ export default{
             clusterStore:useClusterStore(),
             tipStore:useTipStore(),
             command:"",
+            systemStore:useSystemStore(),
         }
     },
     methods:{

@@ -23,6 +23,7 @@ export const useSystemStore = defineStore('system', {
     charts_data:{},
     charts_dom:{},
     cpu_information_static:{},
+    process_cpu_usage:{}
   }),
   actions: {
     refreshRunningInformation(data) {
@@ -63,7 +64,13 @@ export const useSystemStore = defineStore('system', {
           }
         }
     },
-
+    refreshProcessCpuUsage(data) {
+      const { cluster_name, world_name, usage } = data;
+      this.process_cpu_usage = this.process_cpu_usage || {};
+      this.process_cpu_usage[cluster_name] = this.process_cpu_usage[cluster_name] || {};
+      this.process_cpu_usage[cluster_name][world_name] = usage;
+      console.log(this.process_cpu_usage)
+    }
   },
   getters: {
 

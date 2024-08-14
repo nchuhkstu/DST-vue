@@ -138,6 +138,9 @@ export default{
             this.socketio.on('system_information',(data)=>{
                 this.systemStore.refreshRunningInformation(data);
             })
+            this.socketio.on('process_cpu_usage',(data)=>{
+                this.systemStore.refreshProcessCpuUsage(data);
+            })
         },
     },
     mounted(){
