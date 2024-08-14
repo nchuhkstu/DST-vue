@@ -77,26 +77,21 @@ export default{
                 };
                 this.chart.setOption(option);
             }
-            this.systemStore.charts_data[`${this.name}` + '_new'] == false;
         },
     },
     mounted(){
         this.initChart();
         this.draw();
-        this.intervalId = setInterval(() => {
-            if(this.systemStore.charts_data[`${this.name}` + '_new'] == true)
-                this.draw();
-        }, 1000); // 每秒执行一次 draw
     },
-    activated(){
-        window.addEventListener('resize', this.chart.resize);
-        if(this.init==true)
-            this.chart.resize();
-        this.init=true;
-    },
-    deactivated(){
-        window.removeEventListener('resize', this.chart.resize);
-    },
+    // activated(){
+    //     window.addEventListener('resize', this.chart.resize);
+    //     if(this.init==true)
+    //         this.chart.resize();
+    //     this.init=true;
+    // },
+    // deactivated(){
+    //     window.removeEventListener('resize', this.chart.resize);
+    // },
 }
 </script>
 <style scoped>

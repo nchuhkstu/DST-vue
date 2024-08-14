@@ -3,16 +3,16 @@
         <div class="left" id="left">
             <div class="left-item" @click="changeActive('cpu')">
                 <div class="chart-container">
-                    <chart :name="'cpu_' + (Object.keys(systemStore.system.cpuData.usage).length-1)"></chart>
+                    <chart :ref="'cpu_' + (Object.keys(systemStore.system.cpuData.usage).length-1)" :name="'cpu_' + (Object.keys(systemStore.system.cpuData.usage).length-1)"></chart>
                 </div>
                 <div class="information-container">
                     <div class="title">CPU</div>
-                    <div class="information">{{ systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1] + '%' }} {{ parseFloat(systemStore.system.cpuData.frequency).toFixed(2) + ' GHZ' }}</div>
+                    <div class="information">{{ parseFloat(systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1]).toFixed(0) + '%' }} {{ parseFloat(systemStore.system.cpuData.frequency).toFixed(2) + ' GHZ' }}</div>
                 </div>
             </div>
             <div class="left-item" @click="changeActive('memory')">
                 <div class="chart-container">
-                    <chart :name="'memory_'"></chart>
+                    <chart ref="memory" :name="'memory_'"></chart>
                 </div>
                 <div class="information-container">
                     <div class="title">内存</div>
@@ -50,7 +50,7 @@
                         <div class="cpu-bottom-left-line">
                             <div class="cpu-bottom-left-line-item">
                                 <div class="item-top">利用率</div>
-                                <div class="item-bottom">{{ systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1] }}%</div>
+                                <div class="item-bottom">{{ parseFloat(systemStore.system.cpuData.usage[Object.keys(systemStore.system.cpuData.usage).length-1]).toFixed(0) }}%</div>
                             </div>
                             <div class="cpu-bottom-left-line-item">
                                 <div class="item-top">速度</div>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="memory-charts">
                     <div class="memory-charts-top">
-                        <chart :name="'memory_2'" :xline="true" :yline="true"></chart>
+                        <chart ref="memory2" :name="'memory_2'" :xline="true" :yline="true"></chart>
                     </div>
                     <div class="memory-charts-mid">
                         <div class="memory-charts-mid-line" style="display: flex;">
@@ -189,6 +189,9 @@ export default{
     methods:{
         changeActive(data){
             this.active = data;
+            requestAnimationFrame(()=>{
+                this.systemStore.charts_dom["memory2"] = this.$refs.memory2;
+            })
         },
         startResize(){
             this.is_resize = false;
@@ -204,7 +207,11 @@ export default{
         },
     },
     mounted(){
-
+        this.systemStore.charts_dom["memory"] = this.$refs.memory;
+        const length = Object.keys(this.systemStore.system.cpuData.usage).length;
+        for(let i=0;i<length;i++){
+            this.systemStore.charts_dom["cpu_" + i] = this.$refs["cpu_" + i];
+        }
     }
 }
 </script>
