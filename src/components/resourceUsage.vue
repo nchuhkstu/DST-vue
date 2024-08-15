@@ -280,7 +280,7 @@ export default{
     background-color: rgb(118,82,44);
 }
 .right{
-    width: calc(75% - 1.2vh);
+    width: calc(78% - 1.2vh);
     height: calc(90% + 5.5vh - 1.2vh - 2vh);
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);

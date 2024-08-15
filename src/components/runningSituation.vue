@@ -24,10 +24,10 @@
         <div class="resource-container">
             <div class="cpu-container">
                 <div class="cpu">
-                    <cpuUsage :text="'地面cpu占用率'" :progress="parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index].cluster_name]?.['master'] ?? 0).toFixed(0)"></cpuUsage>
+                    <cpuUsage :text="'地面cpu占用率'" :progress="Number(parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['master'] ?? 0).toFixed(0))"></cpuUsage>
                 </div>
                 <div class="cpu">
-                    <cpuUsage :text="'洞穴cpu占用率'" :progress="parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index].cluster_name]?.['caves'] ?? 0).toFixed(0)"></cpuUsage>
+                    <cpuUsage :text="'洞穴cpu占用率'" :progress="Number(parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['caves'] ?? 0).toFixed(0))"></cpuUsage>
                 </div>
             </div>
             <div class="memory-container">
