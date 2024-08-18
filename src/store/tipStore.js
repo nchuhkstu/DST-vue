@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 export const useTipStore = defineStore('tip', {
   state: () => ({
     tip:"",
+    menu:"",
   }),
   actions: {
     showTip(data){
@@ -17,7 +18,7 @@ export const useTipStore = defineStore('tip', {
           tip.style.display = 'none';
           tip.classList.remove('slide-out-top');
         }, 3000);
-    }
+    },
   },
   getters: {
 

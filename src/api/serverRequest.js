@@ -19,7 +19,7 @@ export function save(cluster_name){
 }
 export function backtrack(cluster_name,days){
     return request({
-        url:`/server/start/${cluster_name}/${days}`,
+        url:`/server/backtrack/${cluster_name}/${days}`,
         method: 'get'
     })
 }

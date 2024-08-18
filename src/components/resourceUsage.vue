@@ -23,7 +23,7 @@
                 <div class="chart-container"></div>
                 <div class="information-container">
                     <div class="title">网络</div>
-                    <div class="information"></div>
+                    <div class="information">{{ '发送:' + systemStore.system.networkData.sent + '接受:' + systemStore.system.networkData.receive }}</div>
                 </div>
             </div>
         </div>

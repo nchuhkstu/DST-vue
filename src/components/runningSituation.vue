@@ -31,7 +31,12 @@
                 </div>
             </div>
             <div class="memory-container">
-
+                <div class="memory">
+                    <memoryUsage :text="'地面内存占用'" :progress="Number(parseFloat(systemStore.process_memory_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['master'] ?? 0).toFixed(0))"></memoryUsage>
+                </div>
+                <div class="memory">
+                    <memoryUsage :text="'洞穴内存占用'" :progress="Number(parseFloat(systemStore.process_memory_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['caves'] ?? 0).toFixed(0))"></memoryUsage>
+                </div>
             </div>
             <div class="network-container">
 
@@ -41,6 +46,7 @@
 </template>
 <script>
 import cpuUsage from './cpuUsage.vue'
+import memoryUsage from './memoryUsage.vue'
 import { useLogStore } from '../store/logStore'
 import { useClusterStore} from '../store/clusterStore'
 import { getLog } from '../api/cluserRequest';
@@ -51,6 +57,7 @@ export default{
     name:'runningSituation',
     components:{
         cpuUsage,
+        memoryUsage,
     },
     data(){
         return{
@@ -247,6 +254,13 @@ export default{
     width: 100%;
     height: 30%;
     margin-bottom: 11.1%;
+    background-color: rgba(110, 81, 47, 0.6);
+    border: 0.6vh solid rgb(118,82,44);
+}
+.memory{
+    height: 8vh;
+    margin-top: 2vh;
+    width: 100%;
 }
 .network-container{
     width: 100%;

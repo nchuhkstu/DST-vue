@@ -36,3 +36,10 @@ export function Delete(cluster_name){
         method: 'delete'
     })
 }
+export function Upload(data){
+    return request({
+        url:'/cluster',
+        method: 'post',
+        data:data
+    })
+}

@@ -65,6 +65,7 @@ import { useLogStore } from '../store/logStore'
 import { useTipStore } from '../store/tipStore'
 import { useSystemStore } from '../store/systemStore'
 import { getSystemInfo } from '../api/systemRequest';
+import { backtrack } from '../api/serverRequest'
 export default{
     components:{
         serverList,
@@ -82,6 +83,7 @@ export default{
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),
+
         }
     },
     methods:{
@@ -170,10 +172,11 @@ export default{
     z-index: 9999;
     color: black;
     background-color: rgb(242,222,155);
-    top: 20%;
+    top: 10%;
     font-size: 2vh;
     border-radius: 1vh;
     left: 50%;
+    z-index: 3;
     /* transform: translateX(-50%); */
 }
 .admin-left{

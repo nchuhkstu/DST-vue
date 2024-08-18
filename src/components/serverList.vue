@@ -1,4 +1,30 @@
 <template>
+    <div class="second-menu-container" v-show="tipStore.menu=='add'">
+        <div class="second-menu">
+            <div class="second-menu-title">选择存档模板</div>
+            <div class="second-menu-body">
+                <div class="second-menu-close" @click="showMenu('')">X</div>
+                <div class="modes">
+                    <div class="mode" id="mode-1" @click="changeAddClusterMode('经典模式')">
+                        <i class="ri-checkbox-blank-circle-line icon2" v-show="add_cluster_mode!='经典模式'"></i>
+                        <i class="ri-checkbox-circle-line icon2" v-show="add_cluster_mode=='经典模式'"></i>
+                        <div class="mode-description">经典模式</div>
+                    </div>
+                    <div class="mode" id="mode-2" @click="changeAddClusterMode('岛屿冒险')">
+                        <i class="ri-checkbox-blank-circle-line icon2" v-show="add_cluster_mode!='岛屿冒险'"></i>
+                        <i class="ri-checkbox-circle-line icon2" v-show="add_cluster_mode=='岛屿冒险'"></i>
+                        <div class="mode-description">岛屿冒险</div>
+                    </div>
+                    <div class="mode" id="mode-3" @click="changeAddClusterMode('熔炉')">
+                        <i class="ri-checkbox-blank-circle-line icon2" v-show="add_cluster_mode!='熔炉'"></i>
+                        <i class="ri-checkbox-circle-line icon2" v-show="add_cluster_mode=='熔炉'"></i>
+                        <div class="mode-description">熔炉</div>
+                    </div>
+                </div>
+            </div>
+            <div class="second-menu-submit" @click="handleAdd">确定</div>
+        </div>
+    </div>
     <div class="head">
         <div class="item">存档名</div>
         <div class="item">房间名</div>
@@ -10,9 +36,9 @@
         <div class="item">操作</div>
     </div>
     <div class="container">
-        <server v-for="(server,index) in clusterStore.clusters" :index="index" :server="server" @delete="handleDelete"></server>
+        <server v-for="(server,index) in clusterStore.clusters" :index="index" :key="index" :server="server" @delete="handleDelete"></server>
         <div class="add" >
-            <div class="add-item" @click="handleAdd">
+            <div class="add-item" @click="showMenu('add')">
                 新建<i class="ri-add-circle-line icon"></i>
             </div>
             <div class="add-item">
@@ -35,6 +61,7 @@ export default{
         return{
             clusterStore:useClusterStore(),
             tipStore:useTipStore(),
+            add_cluster_mode:'经典模式',
         }
     },
     methods:{
@@ -52,6 +79,8 @@ export default{
                     return
                 }
                 this.clusterStore.clusters.push(response.data.message)
+                this.tipStore.showTip("添加成功");
+                this.showMenu('');
             })
         },
         handleDelete(cluster_name){
@@ -63,6 +92,15 @@ export default{
                     }
                 }
             })
+        },
+        handleUpload(){
+
+        },
+        showMenu(data){
+            this.tipStore.menu = data;
+        },
+        changeAddClusterMode(data){
+            this.add_cluster_mode = data;
         }
     },
     mounted(){
@@ -129,5 +167,126 @@ export default{
 .icon{
     margin-left: 0.5vw;
     font-size: 3vh;
+}
+.second-menu-container{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3); /* 半透明黑色背景 */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+.second-menu{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(110, 81, 47, 1);
+    border: 0.6vh solid rgb(169, 118, 63);
+    border-radius: 1vh;
+    color: black;
+}
+.second-menu-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4vh;
+    color: rgb(224, 173, 71);
+    margin-top: 2vh;
+}
+.second-menu-close{
+    position: absolute;
+    top: -0vh;
+    right: -0.5vw;
+    transform: translateY(-100%);
+    cursor: pointer;
+    font-size: 2vh;
+}
+.second-menu-body{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5vh;
+    line-height: 3vh;
+    color: rgb(224, 173, 71);
+    margin: 0 1vw;
+    margin-top: 0.5vh;
+}
+.modes{
+    display: flex;
+    justify-content: center;
+}
+.mode{
+    position: relative;
+    height: 25vh;
+    width: 15vw;
+    margin: 1vh 1vw;
+    display: flex;
+    flex-direction: column;
+    padding: none;
+    justify-content: flex-end;
+    align-items: center;
+    background-size:cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    border: 0.6vh solid rgb(169, 118, 63);
+}
+#mode-1{
+    background-image: url(../assets/经典模式.jpg);
+}
+#mode-2{
+    background-image: url(../assets/岛屿冒险.jpg);
+}
+#mode-3{
+    background-image: url(../assets/熔炉.jpg);
+}
+.mode-description{
+    position: absolute;
+    bottom: -4.5vh;
+    font-size: 3vh;
+}
+.icon2{
+    position: absolute;
+    bottom: 1vh;
+    right: 0.3vw;
+    font-size: 5vh;
+    color: rgb(35, 232, 35);
+}
+.second-menu-input{
+    height: 3vh;
+    width: 8vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    text-align: center;
+    font-size: 2vh;
+    outline: none;
+    border: none;
+}
+/* .second-menu-input:focus{
+    border: 0.2vh solid black;
+    height: 2.6vh;
+    width: calc(8vw - 0.4vh);
+} */
+.second-menu-submit{
+    height: 4vh;
+    width: 6vw;
+    margin: 5vh auto;
+    margin-bottom: 1vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(228,196,118);
+    border-radius: 1vh;
+    border: 0.2vh solid rgb(169, 118, 63);
+    font-weight: bold;
+    cursor: pointer;
+}
+.second-menu-submit:hover{
+    background-color: rgb(242,222,155);
 }
 </style>

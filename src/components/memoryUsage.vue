@@ -1,24 +1,29 @@
 <template>
     <div class="cpuUsage">
-        <div class="introduce">{{ text }}</div>
+        <div class="introduce">{{ text }}{{ progress + 'MB' }}</div>
         <div class="cpuUsage-container">
             <div class="progress-bar">
-                <div class="progress" :style="{ width: `${progress}%` }"></div>
+                <div class="progress" :style="{ width: `${format(progress)}%` }"></div>
             </div>
-            <div class="text">{{ progress }}%</div>
+            <div class="text">2GB</div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'cpuUsage',
+    name: 'memoryUsage',
     props: {
         progress:{
             type:Number,
             default:0
         },
         text:String,
+    },
+    methods:{
+        format(data){
+            return data / (1024 * 2) * 100; 
+        }
     }
 }
 </script>

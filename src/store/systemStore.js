@@ -18,17 +18,24 @@ export const useSystemStore = defineStore('system', {
             commited_percent:'',
             pool_paged:'',
             pool_not_paged:'',
+        },
+        networkData:{
+            total:'',
+            sent:'',
+            receive:'',
         }
     },
     charts_data:{},
     charts_dom:{},
     cpu_information_static:{},
-    process_cpu_usage:{}
+    process_cpu_usage:{},
+    process_memory_usage:{},
   }),
   actions: {
     refreshRunningInformation(data) {
         this.system.cpuData = data.cpuData;
         this.system.memoryData = data.memoryData;
+        // this.system.networkData = data.networkData;
         if(Object.keys(this.charts_data).length==0){
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){
             this.charts_data['cpu_' + `${i}`] = Array(60).fill(null).concat(0);
@@ -65,11 +72,14 @@ export const useSystemStore = defineStore('system', {
         }
     },
     refreshProcessCpuUsage(data) {
-      const { cluster_name, world_name, usage } = data;
+      const { cluster_name, world_name, cpu_usage, memory_usage } = data;
       this.process_cpu_usage = this.process_cpu_usage || {};
       this.process_cpu_usage[cluster_name] = this.process_cpu_usage[cluster_name] || {};
-      this.process_cpu_usage[cluster_name][world_name] = usage;
-      console.log(this.process_cpu_usage)
+      this.process_cpu_usage[cluster_name][world_name] = cpu_usage;
+
+      this.process_memory_usage = this.process_memory_usage || {};
+      this.process_memory_usage[cluster_name] = this.process_memory_usage[cluster_name] || {};
+      this.process_memory_usage[cluster_name][world_name] = memory_usage;
     }
   },
   getters: {
