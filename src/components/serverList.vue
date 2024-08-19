@@ -36,7 +36,7 @@
         <div class="item">操作</div>
     </div>
     <div class="container">
-        <server v-for="(server,index) in clusterStore.clusters" :index="index" :key="index" :server="server" @delete="handleDelete"></server>
+        <server v-for="(server,index) in clusterStore.clusters" :index="index" :key="index" :server="server"></server>
         <div class="add" >
             <div class="add-item" @click="showMenu('add')">
                 新建<i class="ri-add-circle-line icon"></i>
@@ -49,7 +49,7 @@
 </template>
 <script>
 import server from '../components/server.vue'
-import { get,add,Delete } from '../api/cluserRequest'
+import { get,add } from '../api/cluserRequest'
 import { useClusterStore} from '../store/clusterStore'
 import { useTipStore } from '../store/tipStore';
 export default{
@@ -81,16 +81,6 @@ export default{
                 this.clusterStore.clusters.push(response.data.message)
                 this.tipStore.showTip("添加成功");
                 this.showMenu('');
-            })
-        },
-        handleDelete(cluster_name){
-            Delete(cluster_name).then(response=>{
-                for(let i=0;i<this.clusterStore.clusters.length;i++){
-                    if(this.clusterStore.clusters[i].cluster_name==cluster_name){
-                        this.clusterStore.clusters.splice(i, 1);
-                        break;
-                    }
-                }
             })
         },
         handleUpload(){

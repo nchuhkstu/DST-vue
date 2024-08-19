@@ -33,7 +33,7 @@
         <div class="item">{{ server.game_mode }}</div>
         <div class="item">{{ server.days }}</div>
         <div class="item">{{ server.current_players + '/' + server.max_players }}</div>
-        <div class="item status" :id="'status' + index"><i class="ri-alarm-warning-line"></i>{{ server.status }}</div>
+        <div class="item status" :id="'status' + server.cluster_name"><i class="ri-alarm-warning-line"></i>{{ server.status }}</div>
         <div class="item">{{ server.port }}</div>
         <div class="operation-container">
             <div class="operation" @click="handleStart">启动</div>
@@ -48,6 +48,7 @@
 </template>
 <script>
 import { start,stop,save,backtrack } from '../api/serverRequest'
+import { Delete } from '../api/cluserRequest';
 import { useTipStore } from '../store/tipStore';
 import { useClusterStore } from '../store/clusterStore';
 export default{
@@ -73,7 +74,7 @@ export default{
                 this.tipStore.showTip(response.data.message);
                 if(response.data.status=="ok"){
                     this.clusterStore.clusters[this.index].status = "运行中";
-                    document.getElementById("status" + this.index).style.color = 'rgb(116, 210, 39)';
+                    document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
                 }
                 else{
                     this.clusterStore.clusters[this.index].status = "启动失败";
@@ -85,7 +86,7 @@ export default{
                 this.showMenu('');
                 this.tipStore.showTip(response.data.message);
                 this.clusterStore.clusters[this.index].status = "未启动";
-                document.getElementById("status" + this.index).style.color = 'red';
+                document.getElementById("status" + this.server.cluster_name).style.color = 'red';
             })
         },
         handleSave(){
@@ -103,7 +104,16 @@ export default{
             })
         },
         handleDelete(){
-            this.$emit('delete',this.server.cluster_name);
+            if(this.clusterStore.clusters[this.index].status == "运行中"){
+                this.tipStore.showTip("服务器正在运行中");
+                this.showMenu('');
+                return;
+            }
+            this.clusterStore.clusters.splice(this.index, 1);
+            Delete(this.server.cluster_name).then(response=>{
+                this.tipStore.showTip('存档已删除');
+                this.showMenu('');
+            })
         },
         handleRemake(){
             this.tipStore.showTip('功能正在开发中，尽情期待');
@@ -114,7 +124,12 @@ export default{
     },
     mounted(){
         if(this.server.status == '运行中'){
-            document.getElementById("status" + this.index).style.color = 'rgb(116, 210, 39)';
+            document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
+        }
+    },
+    updated(){
+        if(this.server.status == '运行中'){
+            document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
         }
     }
 }
