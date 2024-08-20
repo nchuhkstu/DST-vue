@@ -170,7 +170,7 @@ export default{
 .list{
     position: absolute;
     width: calc(13% - 1.2vh);
-    height: calc(90% + 5.5vh - 1.2vh);
+    height: calc(92% + 5.5vh - 1.2vh);
     left: 1%;
     top: 0vh;
     background-color: rgba(110, 81, 47, 0.6);
@@ -202,7 +202,7 @@ export default{
     width: 100%;
 }
 .item{
-    height: 10%;
+    height: 10.22%;
     margin: 0 15%;
     margin-bottom: 1vh;
     width: 80%;

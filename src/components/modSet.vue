@@ -38,7 +38,7 @@ export default{
 .list{
     position: absolute;
     width: calc(13% - 1.2vh);
-    height: calc(90% + 5.5vh - 1.2vh);
+    height: calc(92% + 5.5vh - 1.2vh);
     left: 1%;
     top: 0vh;
     background-color: rgba(110, 81, 47, 0.6);
