@@ -18,11 +18,11 @@
                     <div class="navigation-icon"><i class="ri-home-4-line"></i></div>
                     <div class="navigation-font">房间设置</div>
                 </div>
-                <!-- <div class="navigation" id="worldSet" @click="changeComponent('worldSet')">
+                <div class="navigation" id="worldSet" @click="changeComponent('worldSet')">
                     <div class="navigation-icon"><i class="ri-earth-line"></i></div>
                     <div class="navigation-font">世界设置</div>
                 </div>
-                <div class="navigation" id="modSet" @click="changeComponent('modSet')">
+                <!-- <div class="navigation" id="modSet" @click="changeComponent('modSet')">
                     <div class="navigation-icon"><i class="ri-box-3-line"></i></div>
                     <div class="navigation-font">模组设置</div>
                 </div> -->
@@ -79,7 +79,7 @@ export default{
     data(){
         return{
             activeComponent:'serverList',
-            socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
+            socketio:io('127.0.0.1:8081',{transports:['websocket']}),
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),
