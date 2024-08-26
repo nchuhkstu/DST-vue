@@ -27,7 +27,9 @@
                         <div class="card-message">
                             <div class="card-title">{{ card.name }}</div>
                             <div class="card-value">
-                                <select></select>
+                                <select>
+                                    <option v-for="(value, key) in card.options" :key="key">{{ key }}</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -74,18 +76,18 @@ export default {
             else if (this.active_1 ==2 && this.active_2 ==1){
                 grouped = {
                     世界: this.cards.slice(172,178),
-                    资源再生:this.cards.slice(172,178),
-                    生物: this.cards.slice(178,183),
-                    敌对生物: this.cards.slice(183,192),
-                    巨兽: this.cards.slice(192,197),
+                    资源再生:this.cards.slice(178,183),
+                    生物: this.cards.slice(183,194),
+                    敌对生物: this.cards.slice(194,203),
+                    巨兽: this.cards.slice(203,208),
                 }
             }
             else{
                 grouped = {
-                    世界: this.cards.slice(197,206),
-                    资源: this.cards.slice(206,222),
-                    生物以及刷新点: this.cards.slice(222,227),
-                    敌对生物以及刷新点: this.cards.slice(227,234),
+                    世界: this.cards.slice(208,217),
+                    资源: this.cards.slice(217,233),
+                    生物以及刷新点: this.cards.slice(233,238),
+                    敌对生物以及刷新点: this.cards.slice(238,245),
                 }
             }
             return grouped;
@@ -97,40 +99,40 @@ export default {
             active_2:'1',
             cards:[
                 {name_en:'specialevent', name:'活动',value:'aoto',options:{'自动':'auto','不自动':'noauto'}},
-                {name_en:'autumn', name:'秋',value:'',options:{'':''}},
-                {name_en:'winter', name:'冬',value:'',options:{'':''}},
-                {name_en:'spring', name:'春',value:'',options:{'':''}},
-                {name_en:'summer', name:'夏',value:'',options:{'':''}},
-                {name_en:'day', name:'昼夜选项',value:'',options:{'':''}},
+                {name_en:'autumn', name:'秋',value:'',options:{'长':'longseason','极长':'verylongseason','随机':'random','短':'shortseason','极短':'veryshortseason','无':'noseason'}},
+                {name_en:'winter', name:'冬',value:'',options:{'长':'longseason','极长':'verylongseason','随机':'random','短':'shortseason','极短':'veryshortseason','无':'noseason'}},
+                {name_en:'spring', name:'春',value:'',options:{'长':'longseason','极长':'verylongseason','随机':'random','短':'shortseason','极短':'veryshortseason','无':'noseason'}},
+                {name_en:'summer', name:'夏',value:'',options:{'长':'longseason','极长':'verylongseason','随机':'random','短':'shortseason','极短':'veryshortseason','无':'noseason'}},
+                {name_en:'day', name:'昼夜选项',value:'',options:{'长 白天':'longday','长 黄昏':'longdusk','长 夜晚':'longnight','无 白天':'noday','无 黄昏':'nodusk','无 夜晚':'nonight','仅 白天':'onlyday','仅 黄昏':'onlydusk','仅 夜晚':'onlynight'}},
                 {name_en:'spawnmode', name:'出生模式',value:'',options:{'':''}},
-                {name_en:'ghostenabled', name:'冒险家死亡',value:'',options:{'always':'变鬼魂'}},
-                {name_en:'portalresurection', name:'在绚丽之门复活',value:'',options:{'always':'启用'}},
-                {name_en:'ghostsanitydrain', name:'鬼魂理智惩罚',value:'',options:{'':''}},
-                {name_en:'resettime', name:'死亡重置倒计时',value:'',options:{'':''}},
-                {name_en:'beefaloheat', name:'皮弗娄牛交配频率',value:'',options:{'':''}},
+                {name_en:'ghostenabled', name:'冒险家死亡',value:'always',options:{'变鬼魂':'always','更换冒险家':'none'}},
+                {name_en:'portalresurection', name:'在绚丽之门复活',value:'none',options:{'禁用':'none','启用':'always'}},
+                {name_en:'ghostsanitydrain', name:'鬼魂理智值惩罚',value:'always',options:{'启用':'always','禁用':'none'}},
+                {name_en:'resettime', name:'死亡重置倒计时',value:'',options:{'禁用':'none','慢':'slow','快':'fast','立刻':'always'}},
+                {name_en:'beefaloheat', name:'皮弗娄牛交配频率',value:'',options:{'无':'never','很少':'rare','较多':'often','大量':'always'}},
                 {name_en:'krampus', name:'坎普斯',value:'',options:{'':''}},
 
-                {name_en:'crow_carnival', name:'盛夏鸦年华',value:'',options:{'':''}},
-                {name_en:'hallowed_nights', name:'万圣夜',value:'',options:{'':''}},
-                {name_en:'winters_feast', name:'冬季盛宴',value:'',options:{'':''}},
-                {name_en:'year_of_the_gobbler', name:'火鸡之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_varg', name:'座狼之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_carrat', name:'胡萝卜鼠之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_pig', name:'猪王之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_beefalo', name:'皮弗娄牛之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_catcoon', name:'浣猫之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_bunnyman', name:'兔人之年',value:'',options:{'':''}},
-                {name_en:'year_of_the_dragonfly', name:'龙蝇之年',value:'',options:{'':''}},
+                {name_en:'crow_carnival', name:'盛夏鸦年华',value:'',options:{'总是':'enable'}},
+                {name_en:'hallowed_nights', name:'万圣夜',value:'',options:{'总是':'enable'}},
+                {name_en:'winters_feast', name:'冬季盛宴',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_gobbler', name:'火鸡之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_varg', name:'座狼之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_carrat', name:'胡萝卜鼠之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_pig', name:'猪王之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_beefalo', name:'皮弗娄牛之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_catcoon', name:'浣猫之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_bunnyman', name:'兔人之年',value:'',options:{'总是':'enable'}},
+                {name_en:'year_of_the_dragonfly', name:'龙蝇之年',value:'',options:{'总是':'enable'}},
 
                 {name_en:'extrastartingitems', name:'额外起始资源',value:'default',options:{'第5天后':'5','第10天后':'default','第15天后':'15','第20天后':'20','总是':'0','从不':'none'}},
                 {name_en:'seasonalstartingitems', name:'季节起始物品',value:'',options:{'':''}},
-                {name_en:'spawnprotection', name:'防骚扰出生保护',value:'',options:{'default':'自动检测','never':'无','always':'总是'}},
-                {name_en:'dropeverythingondespawn', name:'离开游戏后物品掉落',value:'',options:{'always':'所有'}},
-                {name_en:'healthpenalty', name:'血量上限惩罚',value:'',options:{'always':'启用'}},
-                {name_en:'lessdamagetaken', name:'收到的伤害',value:'',options:{'默认':'none','较多':'more'}},
-                {name_en:'temperaturedamage', name:'温度伤害',value:'',options:{'default':'默认','nonlethal':'非致命'}},
-                {name_en:'hunger', name:'饥饿伤害',value:'',options:{'default':'默认','nonlethal':'非致命'}},
-                {name_en:'darkness', name:'黑暗伤害',value:'',options:{'default':'默认','nonlethal':'非致命'}},
+                {name_en:'spawnprotection', name:'防骚扰出生保护',value:'',options:{'自动检测':'default','无':'never','总是':'always'}},
+                {name_en:'dropeverythingondespawn', name:'离开游戏后物品掉落',value:'',options:{'所有':'always'}},
+                {name_en:'healthpenalty', name:'血量上限惩罚',value:'always',options:{'启用':'always'}},
+                {name_en:'lessdamagetaken', name:'收到的伤害',value:'none',options:{'默认':'none','较多':'more'}},
+                {name_en:'temperaturedamage', name:'温度伤害',value:'',options:{'默认':'default','非致命':'nonlethal'}},
+                {name_en:'hunger', name:'饥饿伤害',value:'',options:{'默认':'default','非致命':'nonlethal'}},
+                {name_en:'darkness', name:'黑暗伤害',value:'',options:{'默认':'default','非致命':'nonlethal'}},
                 {name_en:'shadowcreatures', name:'理智怪兽',value:'',options:{'':''}},
                 {name_en:'brightmarecreatures', name:'启蒙怪兽',value:'',options:{'':''}},
 
@@ -150,7 +152,7 @@ export default {
 
                 {name_en:'carrots_regrowth', name:'胡萝卜',value:'',options:{'':''}},
                 {name_en:'cactus_regrowth', name:'仙人掌',value:'',options:{'':''}},
-                {name_en:'basicresource_regrowth', name:'基础资源',value:'',options:{'':''}},
+                {name_en:'basicresource_regrowth', name:'基础资源',value:'none',options:{'':''}},
                 {name_en:'twiggytrees_regrowth', name:'多枝树',value:'',options:{'':''}},
                 {name_en:'saltstack_regrowth', name:'盐堆',value:'',options:{'':''}},
                 {name_en:'reeds_regrowth', name:'芦苇',value:'',options:{'':''}},
@@ -273,7 +275,7 @@ export default {
 
                 {name_en:'chess', name:'发条装置',value:'',options:{'':''}},
                 {name_en:'angrybees', name:'杀人蜂蜂窝',value:'',options:{'':''}},
-                {name_en:'ocean_waterplant', name:'海草',value:'',options:{'':''}},
+                {name_en:'ocean_waterplant', name:'海草',value:'ocean_default',options:{'':''}},
                 {name_en:'walrus', name:'海象营地',value:'',options:{'':''}},
                 {name_en:'merm', name:'漏雨的小屋',value:'',options:{'':''}},
                 {name_en:'houndmound', name:'猎犬丘',value:'',options:{'':''}},
@@ -365,39 +367,6 @@ export default {
                 {name_en:'tentacles', name:'触手',value:'',options:{'':''}},
 
             ],
-            world:'forest',
-            rule:'rule',
-            forest_rule:{
-                全局:{活动:{name:"活动",value:"",display:"自动"},秋:{value:"",display:"默认"},冬:{value:"",display:"默认"},春:{value:"",display:"默认"},夏:{value:"",display:"默认"},昼夜选项:{value:"",display:"默认"},出生模式:{value:"",display:"绚丽之门"},冒险家死亡:{value:"",display:"变鬼魂"},在绚丽之门复活:{value:"",display:"禁用"},鬼魂理智值惩罚:{value:"",display:"启用"},死亡重置倒计时:{value:"",display:"默认"},皮弗娄牛交配频率:{value:"",display:"默认"},坎普斯:{value:"",display:"默认"},},
-                活动:{盛夏鸦年华:{value:"",display:"默认"},万圣夜:{value:"",display:"默认"},冬季盛宴:{value:"",display:"默认"},火鸡之年:{value:"",display:"默认"},座狼之年:{value:"",display:"默认"},猪王之年:{value:"",display:"默认"},胡萝卜鼠之年:{value:"",display:"默认"},皮弗娄牛之年:{value:"",display:"默认"},浣猫之年:{value:"",display:"默认"},兔人之年:{value:"",display:"默认"},龙蝇之年:{value:"",display:"默认"},},
-                冒险家:{额外起始资源:{value:"",display:"第10天后"},季节起始物品:{value:"",display:"默认"},防骚扰出生保护:{value:"",display:"自动检测"},离开游戏后物品掉落:{value:"",display:"默认"},血量上限惩罚:{value:"",display:"默认"},收到的伤害:{value:"",display:"默认"},温度伤害:{value:"",display:"默认"},饥饿伤害:{value:"",display:"默认"},黑暗伤害:{value:"",display:"默认"},理智怪兽:{value:"",display:"默认"},启蒙怪兽:{value:"",display:"默认"},},
-                世界:{猎犬袭击:{value:"",display:"默认"},冰猎犬群:{value:"",display:"默认"},火猎犬群:{value:"",display:"默认"},森林石化:{value:"",display:"默认"},流星频率:{value:"",display:"默认"},狩猎:{value:"",display:"默认"},荒野裂隙开启:{value:"",display:"默认"},荒野裂隙频率:{value:"",display:"默认"},追猎惊喜:{value:"",display:"默认"},野火:{value:"",display:"默认"},闪电:{value:"",display:"默认"},雨:{value:"",display:"默认"},青蛙雨:{value:"",display:"默认"},},
-                资源再生:{再生速度:{value:"",display:"默认"},仙人掌:{value:"",display:"默认"},基础资源:{value:"",display:"默认"},多枝树:{value:"",display:"默认"},常青树:{value:"",display:"默认"},月树:{value:"",display:"默认"},桦栗树:{value:"",display:"默认"},棕榈松果树:{value:"",display:"默认"},盐堆:{value:"",display:"默认"},胡萝卜:{value:"",display:"默认"},芦苇:{value:"",display:"默认"},花:{value:"",display:"默认"},},
-                非自然传送门资源:{传送频率:{value:"",display:"默认"},发光蟹:{value:"",display:"默认"},棕榈松果树芽:{value:"",display:"默认"},火药猴:{value:"",display:"默认"},猴尾草:{value:"",display:"默认"},香蕉丛:{value:"",display:"默认"},},
-                生物:{一角鲸:{value:"",display:"默认"},企鸥:{value:"",display:"默认"},兔人:{value:"",display:"默认"},兔子:{value:"",display:"默认"},浣猫:{value:"",display:"默认"},火鸡:{value:"",display:"默认"},猪:{value:"",display:"默认"},草壁虎转化:{value:"",display:"默认"},蜜蜂:{value:"",display:"默认"},蝴蝶:{value:"",display:"默认"},鱼群:{value:"",display:"默认"},鸟:{value:"",display:"默认"},鼹鼠:{value:"",display:"默认"},龙虾:{value:"",display:"默认"},},
-                敌对生物:{恐怖猎犬:{value:"",display:"默认"},月亮码头海盗:{value:"",display:"默认"},月石企鸥:{value:"",display:"默认"},杀人蜂:{value:"",display:"默认"},海象:{value:"",display:"默认"},猎犬:{value:"",display:"默认"},破碎蜘蛛:{value:"",display:"默认"},蚊子:{value:"",display:"默认"},蜘蛛:{value:"",display:"默认"},蜘蛛战士:{value:"",display:"默认"},蝙蝠:{value:"",display:"默认"},青蛙:{value:"",display:"默认"},食人花:{value:"",display:"默认"},饼干切割机:{value:"",display:"默认"},鱼人:{value:"",display:"默认"},鱿鱼:{value:"",display:"默认"},鲨鱼:{value:"",display:"默认"},},
-                巨兽:{克劳斯:{value:"",display:"默认"},帝王蟹:{value:"",display:"默认"},恐怖之眼:{value:"",display:"默认"},果蝇王:{value:"",display:"默认"},树精守卫:{value:"",display:"默认"},毒桦栗树:{value:"",display:"默认"},熊獾:{value:"",display:"默认"},独眼巨鹿:{value:"",display:"默认"},蚁狮贡品:{value:"",display:"默认"},蜂王:{value:"",display:"默认"},蜘蛛女王:{value:"",display:"默认"},邪天翁:{value:"",display:"默认"},麋鹿鹅:{value:"",display:"默认"},龙蝇:{value:"",display:"默认"},}
-            },
-            forest_generate:{
-                全局:{起始季节:{value:"",display:"秋"}},
-                世界:{生物群落:{value:"",display:"联机版"},出生点:{value:"",display:"默认"},世界大小:{value:"",display:"中"},分支:{value:"",display:"默认"},环形:{value:"",display:"默认"},道路:{value:"",display:"默认"},试金石:{value:"",display:"默认"},失败的冒险家:{value:"",display:"默认"},开始资源多样化:{value:"",display:"经典"},天体裂隙:{value:"",display:"默认"},盒中泰拉:{value:"",display:"默认"},舞台剧:{value:"",display:"默认"}},
-                资源:{仙人掌:{value:"",display:"默认"},公牛海带茎:{value:"",display:"默认"},尖刺灌木:{value:"",display:"默认"},巨石:{value:"",display:"默认"},月亮树苗:{value:"",display:"默认"},月亮石:{value:"",display:"默认"},月树:{value:"",display:"默认"},树苗:{value:"",display:"默认"},所有树:{value:"",display:"默认"},棕榈松果树:{value:"",display:"默认"},池塘:{value:"",display:"默认"},流星区域:{value:"",display:"默认"},浆果丛:{value:"",display:"默认"},海岸公牛海带:{value:"",display:"默认"},海星:{value:"",display:"默认"},海蚀柱:{value:"",display:"默认"},温泉:{value:"",display:"默认"},燧石:{value:"",display:"默认"},石果灌木丛:{value:"",display:"默认"},胡萝卜:{value:"",display:"默认"},芦苇:{value:"",display:"默认"},花和邪恶花:{value:"",display:"默认"},草:{value:"",display:"默认"},蘑菇:{value:"",display:"默认"},迷你冰川:{value:"",display:"默认"},风滚草:{value:"",display:"默认"},},
-                生物以及刷新点:{伏特羊:{value:"",display:"默认"},兔洞:{value:"",display:"默认"},沙拉蝾螈:{value:"",display:"默认"},猪屋:{value:"",display:"默认"},皮弗娄牛:{value:"",display:"默认"},秃鹫:{value:"",display:"默认"},空心树桩:{value:"",display:"默认"},胡萝卜鼠:{value:"",display:"默认"},蜜蜂蜂窝:{value:"",display:"默认"},鱼群:{value:"",display:"默认"},鼹鼠丘:{value:"",display:"默认"},龙虾窝:{value:"",display:"默认"}},
-                敌对生物以及刷新点:{发条装置:{value:"",display:"默认"},杀人蜂蜂窝:{value:"",display:"默认"},海草:{value:"",display:"默认"},海象营地:{value:"",display:"默认"},漏雨的小屋:{value:"",display:"默认"},猎犬丘:{value:"",display:"默认"},破碎蜘蛛洞:{value:"",display:"默认"},蜘蛛巢:{value:"",display:"默认"},触手:{value:"",display:"默认"},高脚鸟:{value:"",display:"默认"}},
-            },
-            cave_rule:{
-                世界:{地震:{value:"",display:"默认"},洞穴蠕虫攻击:{value:"",display:"默认"},荒野裂隙开启:{value:"",display:"默认"},荒野裂隙频率:{value:"",display:"默认"},远古大门:{value:"",display:"默认"},雨:{value:"",display:"默认"}},
-                资源再生:{再生速度:{value:"",display:"默认"},光虫花:{value:"",display:"默认"},月亮蘑菇树:{value:"",display:"默认"},荧光花:{value:"",display:"默认"},蘑菇树:{value:"",display:"默认"}},
-                生物:{兔人:{value:"",display:"默认"},尘蛾:{value:"",display:"默认"},猪:{value:"",display:"默认"},球状光虫:{value:"",display:"默认"},石虾:{value:"",display:"默认"},穴居猴:{value:"",display:"默认"},草壁虎转化:{value:"",display:"默认"},蘑菇地精:{value:"",display:"默认"},蛞蝓龟:{value:"",display:"默认"},蜗牛龟:{value:"",display:"默认"},鼹鼠:{value:"",display:"默认"}},
-                敌对生物:{喷射蜘蛛:{value:"",display:"默认"},洞穴蜘蛛:{value:"",display:"默认"},穴居悬蛛:{value:"",display:"默认"},蜘蛛:{value:"",display:"默认"},蜘蛛战士:{value:"",display:"默认"},蝙蝠:{value:"",display:"默认"},裸鼹蝠:{value:"",display:"默认"},遗迹梦魇:{value:"",display:"默认"},鱼人:{value:"",display:"默认"}},
-                巨兽:{噩梦猪人:{value:"",display:"默认"},果蝇王:{value:"",display:"默认"},树精守卫:{value:"",display:"默认"},毒菌蟾蜍:{value:"",display:"默认"},蜘蛛女王:{value:"",display:"默认"}},
-            },
-            cave_generate:{
-                世界:{生物群落:"地下",出生点:"洞穴",世界大小:{value:"",display:"默认"},分支:{value:"",display:"默认"},环形:{value:"",display:"默认"},试金石:{value:"",display:"默认"},失败的冒险家:{value:"",display:"默认"},洞穴光照:{value:"",display:"默认"},开始资源多样化:{value:"",display:"默认"}},
-                资源:{发光浆果:{value:"",display:"默认"},尖刺灌木:{value:"",display:"默认"},巨石:{value:"",display:"默认"},树苗:{value:"",display:"默认"},所有树:{value:"",display:"默认"},池塘:{value:"",display:"默认"},洞穴蕨类:{value:"",display:"默认"},浆果丛:{value:"",display:"默认"},燧石:{value:"",display:"默认"},芦苇:{value:"",display:"默认"},苔藓:{value:"",display:"默认"},草:{value:"",display:"默认"},荧光花:{value:"",display:"默认"},蘑菇:{value:"",display:"默认"},蘑菇树:{value:"",display:"默认"},香蕉:{value:"",display:"默认"}},
-                生物以及刷新点:{兔屋:{value:"",display:"默认"},啜食者:{value:"",display:"默认"},石虾:{value:"",display:"默认"},穴居猴桶:{value:"",display:"默认"},蛞蝓龟窝:{value:"",display:"默认"}},
-                敌对生物以及刷新点:{发条装置:{value:"",display:"默认"},梦魇裂隙:{value:"",display:"默认"},洞穴蠕虫:{value:"",display:"默认"},蛛网岩:{value:"",display:"默认"},蜘蛛巢:{value:"",display:"默认"},蝙蝠:{value:"",display:"默认"},触手:{value:"",display:"默认"}},
-            }
         }
     },
     methods:{
@@ -570,9 +539,6 @@ export default {
     border-radius: 1vh;
     justify-content: center;
 }
-.worldCard{
-    flex-basis: calc(33.33% - 0.5vw);
-}
 .submit-container{
     height: 6vh;
     width: 100%;
@@ -602,14 +568,14 @@ export default {
 }
 .world-card{
     display: flex;
-    height: 6vh;
+    height: 7vh;
     width: calc(33.33% - 0.5vw);
     background-color: rgb(40,30,20);
     border-radius: 1vh;
 }
 .card-icon{
-    height: 5vh;
-    width: 5vh;
+    height: 6vh;
+    width: 6vh;
     margin: 0.5vh 0.5vw;
 }
 .card-message{
@@ -633,5 +599,12 @@ export default {
     justify-content: center;
     color: orange;
     align-items: center;
+}
+select{
+    border: none;
+    outline: none;
+    height: 80%;
+    /* width: 50%; */
+    color: orange;
 }
 </style>
