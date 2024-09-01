@@ -176,7 +176,7 @@ export default{
     font-size: 2vh;
     border-radius: 1vh;
     left: 50%;
-    z-index: 3;
+    z-index: 9999;
     /* transform: translateX(-50%); */
 }
 .admin-left{

@@ -5,7 +5,7 @@
         </div>
         <div class="set-container">
             <div class="set">
-                <world></world>
+                <world ref="worldRef"></world>
             </div>
         </div>
     </div>
@@ -13,6 +13,7 @@
 <script>
 import {useClusterStore} from '../store/clusterStore'
 import world from './world.vue'
+import {get} from '../api/worldRequest'
 export default{
     name:'worldSet',
     components:{
@@ -21,16 +22,44 @@ export default{
     data(){
         return{
             clusterStore:useClusterStore(),
-            
         }
     },
     methods:{
         changeIndex(index){
             this.clusterStore.setIndex(Number(index));
+            this.getWorld();
         },
+        getWorld(){
+            get(this.clusterStore.clusters[this.clusterStore.index].cluster_name).then(response=>{
+                this.$refs.worldRef.cards.slice(0,176).forEach(card => {
+                    if (response.data["overrides1"][card.name_en] !== undefined) {
+                        card.value = response.data["overrides1"][card.name_en];
+                        if(card.value != card.origin){
+                            card.changed = true;
+                        }
+                        else{
+                            card.changed = false;
+                        }
+                    }
+                });
+                this.$refs.worldRef.cards.slice(176,250).forEach(card => {
+                    if (response.data["overrides2"][card.name_en] !== undefined) {
+                        card.value = response.data["overrides2"][card.name_en];
+                        if(card.value != card.origin){
+                            card.changed = true;
+                        }
+                        else{
+                            card.changed = false;
+                        }
+                        card.value = response.data["overrides2"][card.name_en];
+                    }
+                });
+            })
+        },
+
     },
     mounted(){
-        
+        this.getWorld();
     },
     activated(){
         if(!this.clusterStore.clusters[this.clusterStore.index])
