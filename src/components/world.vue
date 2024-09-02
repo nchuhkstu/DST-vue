@@ -302,7 +302,7 @@ export default {
 
                 {name_en:'earthquakes', name:'地震',value:'default',options:{'无':'never','很少':'rare','默认':'default','较多':'often','大量':'always'},changed:false,origin:'default'},
                 {name_en:'wormattacks', name:'洞穴蠕虫攻击',value:'default',options:{'无':'never','很少':'rare','默认':'default','较多':'often','大量':'always'},changed:false,origin:'default'},
-                {name_en:'rifts_enabledd_cave', name:'荒野裂隙开启',value:'default',options:{'无':'never','自动检测':'default','总是':'always'},changed:false,origin:'default'},
+                {name_en:'rifts_enabledd_cave', name:'荒野裂隙',value:'default',options:{'无':'never','自动检测':'default','总是':'always'},changed:false,origin:'default'},
                 {name_en:'rifts_frequency_cave', name:'荒野裂隙频率',value:'default',options:{'无':'never','很少':'rare','默认':'default','较多':'often','大量':'always'},changed:false,origin:'default'},
                 {name_en:'atriumgate', name:'远古大门',value:'default',options:{'极慢':'veryslow','慢':'slow','默认':'default','快':'fast','极快':'veryfast'},changed:false,origin:'default'},
                 {name_en:'acidrain_enabledd', name:'酸雨',value:'always',options:{'禁用':'none','启用':'always'},changed:false,origin:'always'},
