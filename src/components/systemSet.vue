@@ -1,9 +1,21 @@
 <template>
     <div class="SystemSet">
         <div class="item">
-            <div class="label">专用服务器可执行文件路径</div>
+            <div class="label">SteamCMD路径</div>
+            <div class="input-container">
+                <input v-model="data.steamCMD_path">
+            </div>
+            <div class="download">
+                <div class="submit" @click="handleDownloadingSteamCMD">下载SteamCMD</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="label">专用服务器路径</div>
             <div class="input-container">
                 <input v-model="data.exe_path">
+            </div>
+            <div class="download">
+                <div class="submit">更新游戏</div>
             </div>
         </div>
         <div class="item">
@@ -24,13 +36,14 @@
     </div>
 </template>
 <script>
-import { get,post } from '../api/systemRequest'
+import { get,post,downloadingSteamCMD } from '../api/systemRequest'
 import { useTipStore } from '../store/tipStore'
 export default{
     name:'systemSet',
     data(){
         return{
             data:{
+                steamCMD_path:'',
                 cluster_path:'',
                 exe_path:'',
             },
@@ -45,6 +58,13 @@ export default{
         },
         handlePost(){
             post(this.data).then(response=>{
+                if(response.data.status == "ok"){
+                    this.tipStore.showTip(response.data.message);
+                }
+            })
+        },
+        handleDownloadingSteamCMD(){
+            downloadingSteamCMD().then(response=>{
                 if(response.data.status == "ok"){
                     this.tipStore.showTip(response.data.message);
                 }
@@ -70,6 +90,15 @@ export default{
     align-items: center;
     justify-content: center;
     background-color: rgb(46,37,27);
+    position: relative;
+}
+.download{
+    position: absolute;
+    left: 100%;
+    top: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .label{
     width: 25%;

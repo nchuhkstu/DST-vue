@@ -18,3 +18,10 @@ export function getSystemInfo(){
         method: 'get'
     })
 }
+
+export function downloadingSteamCMD(){
+    return request({
+        url:'/system/downloading_steamCMD',
+        method: 'get'
+    })
+}
