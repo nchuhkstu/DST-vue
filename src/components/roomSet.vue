@@ -111,7 +111,6 @@ export default{
                 master_server_port:null,
                 caves_server_port:null,
             },
-            clusters:null,
             clusterStore:useClusterStore(),
             tipStore:useTipStore(),
         }

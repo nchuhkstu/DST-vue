@@ -14,6 +14,10 @@
                     <div class="navigation-icon"><i class="ri-computer-line"></i></div>
                     <div class="navigation-font">运行概况</div>
                 </div>
+                <div class="navigation" id="userManage" @click="changeComponent('userManage')">
+                    <div class="navigation-icon"><i class="ri-user-line"></i></div>
+                    <div class="navigation-font">玩家管理</div>
+                </div>
                 <div class="navigation" id="roomSet" @click="changeComponent('roomSet')">
                     <div class="navigation-icon"><i class="ri-home-4-line"></i></div>
                     <div class="navigation-font">房间设置</div>
@@ -54,6 +58,7 @@
 <script>
 import serverList from '../components/serverList.vue'
 import runningSituation from '../components/runningSituation.vue'
+import userManage from '../components/userManage.vue'
 import roomSet from '../components/roomSet.vue'
 import worldSet from '../components/worldSet.vue'
 import modSet from '../components/modSet.vue'
@@ -70,6 +75,7 @@ export default{
     components:{
         serverList,
         runningSituation,
+        userManage,
         roomSet,
         worldSet,
         modSet,
