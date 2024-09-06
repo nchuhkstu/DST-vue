@@ -27,11 +27,11 @@
     </div>
     <div class="head">
         <div class="item">存档名</div>
-        <div class="item">房间名</div>
-        <div class="item">模式</div>
-        <div class="item">天数</div>
-        <div class="item">当前人数</div>
-        <div class="item">状态</div>
+        <div class="item" style="width: calc(19% - 0.3vh);">房间名</div>
+        <div class="item" style="width: calc(7% - 0.3vh);">模式</div>
+        <div class="item" style="width: calc(7% - 0.3vh);">天数</div>
+        <div class="item" style="width: calc(7% - 0.3vh);">人数</div>
+        <div class="item" style="width: calc(10% - 0.3vh);">状态</div>
         <div class="item">占用端口</div>
         <div class="item">操作</div>
     </div>

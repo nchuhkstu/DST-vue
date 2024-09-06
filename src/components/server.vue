@@ -27,13 +27,12 @@
                 <div class="second-menu-submit" @click="handleDelete">确定</div>
             </div>
         </div>
-
         <div class="item">{{ server.cluster_name }}</div>
-        <div class="item">{{ server.server_name }}</div>
-        <div class="item">{{ server.game_mode }}</div>
-        <div class="item">{{ server.days }}</div>
-        <div class="item">{{ server.current_players + '/' + server.max_players }}</div>
-        <div class="item status" :id="'status' + server.cluster_name"><i class="ri-alarm-warning-line"></i>{{ server.status }}</div>
+        <div class="item" style="width: calc(19% - 0.3vh);">{{ server.server_name }}</div>
+        <div class="item" style="width: calc(7% - 0.3vh);">{{ server.game_mode }}</div>
+        <div class="item" style="width: calc(7% - 0.3vh);">{{ server.days }}</div>
+        <div class="item" style="width: calc(7% - 0.3vh);">{{ server.current_players + '/' + server.max_players }}</div>
+        <div class="item status" style="width: calc(10% - 0.3vh);" :id="'status' + server.cluster_name"><i class="ri-alarm-warning-line"></i>{{ server.status }}</div>
         <div class="item">{{ server.port }}</div>
         <div class="operation-container">
             <div class="operation" @click="handleStart">启动</div>
@@ -66,14 +65,14 @@ export default{
     },
     methods:{
         handleStart(){
-            if(this.clusterStore.clusters[this.index].status == "运行中"){
-                this.tipStore.showTip("服务器正在运行中");
+            if(this.clusterStore.clusters[this.index].status == "运行中" || this.clusterStore.clusters[this.index].status == "启动中"){
+                this.tipStore.showTip("服务器正在" + this.clusterStore.clusters[this.index].status);
                 return;
             }
             start(this.server.cluster_name).then(response=>{
                 this.tipStore.showTip(response.data.message);
                 if(response.data.status=="ok"){
-                    this.clusterStore.clusters[this.index].status = "运行中";
+                    this.clusterStore.clusters[this.index].status = "启动中";
                     document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
                 }
                 else{
@@ -104,8 +103,8 @@ export default{
             })
         },
         handleDelete(){
-            if(this.clusterStore.clusters[this.index].status == "运行中"){
-                this.tipStore.showTip("服务器正在运行中");
+            if(this.clusterStore.clusters[this.index].status == "运行中" || this.clusterStore.clusters[this.index].status == "启动中"){
+                this.tipStore.showTip("服务器正在" + this.clusterStore.clusters[this.index].status + ",无法删除");
                 this.showMenu('');
                 return;
             }
@@ -123,14 +122,14 @@ export default{
         }
     },
     mounted(){
-        if(this.server.status == '运行中'){
+        if(this.server.status == '运行中' || this.server.status == '启动中'){
             document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
         }
     },
     updated(){
-        if(this.server.status == '运行中'){
-            document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
-        }
+        // if(this.server.status == '运行中' || this.server.status == '启动中'){
+        //     document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
+        // }
     }
 }
 </script>

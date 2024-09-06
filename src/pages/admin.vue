@@ -71,6 +71,7 @@ import { useTipStore } from '../store/tipStore'
 import { useSystemStore } from '../store/systemStore'
 import { getSystemInfo } from '../api/systemRequest';
 import { backtrack } from '../api/serverRequest'
+import { useClusterStore } from '../store/clusterStore'
 export default{
     components:{
         serverList,
@@ -89,7 +90,7 @@ export default{
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),
-
+            clusterStore:useClusterStore(),
         }
     },
     methods:{
@@ -148,6 +149,16 @@ export default{
             })
             this.socketio.on('process_cpu_usage',(data)=>{
                 this.systemStore.refreshProcessCpuUsage(data);
+            })
+            this.socketio.on('server_update',(data)=>{
+                for(let i=0;i<this.clusterStore.clusters.length;i++){
+                    if(this.clusterStore.clusters[i].cluster_name == data.cluster_name){
+                        this.clusterStore.clusters[i].status = data.status;
+                        // if(data.status == "令牌错误" || data.status == "端口错误"){
+                        //     document.getElementById("status"+this.clusterStore.clusters[i].cluster_name).style.color = "red";
+                        // }
+                    }
+                }
             })
         },
     },
