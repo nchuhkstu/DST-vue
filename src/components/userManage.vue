@@ -17,7 +17,7 @@
                 <div class="user" v-for="(value,key) in userStore.users">
                     <div class="user-item"><img class="user-avatar" :src="fromatRole(value.role)"></div>
                     <div class="user-item">{{ key }}</div>
-                    <div class="user-item" style="width: calc(15% - 2vw);justify-content: start;padding-left: 2vw;">玩家名称</div>
+                    <div class="user-item" style="width: calc(15%);">{{ value.name }}</div>
                     <div class="user-item">{{ value.player }}</div>
                     <div class="user-item">{{ fromatSurvivalTime(value.survivalTime) }}</div>
                     <div class="user-item">{{ fromatOnline(value.online) }}</div>
@@ -53,7 +53,6 @@ export default{
         handleGetUsers(){
             getUsers(this.clusterStore.clusters[this.clusterStore.index].cluster_name).then(response=>{
                 this.userStore.users = response.data
-                console.log(response.data)
             })
         },
         handleSetAdmin(userid){
@@ -78,7 +77,7 @@ export default{
             })
         },
         fromatRole(role){
-            return "../../public/avatar/" + role + "_true.png";
+            return "/static/avatar/" + role + "_true.png";
         },
         fromatSurvivalTime(survivalTime){
             return (survivalTime / 480).toFixed(1) + '天';
@@ -95,6 +94,7 @@ export default{
     activated(){
         if(!this.clusterStore.clusters[this.clusterStore.index])
             return;
+        this.handleGetUsers();
         this.clusterStore.refreshIndex();
     }
 }

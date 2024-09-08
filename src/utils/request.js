@@ -1,8 +1,8 @@
 import axios from 'axios'
 export function request(config){
     const instance = axios.create({
-        //${window.location.origin}
-        baseURL: 'http://127.0.0.1:8081',
+        // baseURL: window.location.origin,
+        baseURL:'http://127.0.0.1:5000',
         timeout:5000000
     })
     //添加请求拦截器

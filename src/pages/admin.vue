@@ -43,8 +43,8 @@
         <div class="admin-right">
             <div class="attention-container">
                 <div class="attention">未经授权,禁止商用</div>
-                <div class="attention">面板版本 : 1.1.0</div>
-                <div class="attention">游戏版本:624447</div>
+                <div class="attention">面板版本 : 1.3.1</div>
+                <div class="attention">游戏版本:XXXXXX</div>
                 <div class="link"></div>
             </div>
             <div class="function">
@@ -72,6 +72,7 @@ import { useSystemStore } from '../store/systemStore'
 import { getSystemInfo } from '../api/systemRequest';
 import { backtrack } from '../api/serverRequest'
 import { useClusterStore } from '../store/clusterStore'
+import { useDownloadStore } from '../store/downloadStore'
 export default{
     components:{
         serverList,
@@ -86,11 +87,13 @@ export default{
     data(){
         return{
             activeComponent:'serverList',
-            socketio:io('127.0.0.1:8081',{transports:['websocket']}),
+            socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
+            // socketio:io(window.location.host,{transports:['websocket']}),
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),
             clusterStore:useClusterStore(),
+            downloadStore:useDownloadStore(),
         }
     },
     methods:{
@@ -150,7 +153,14 @@ export default{
             this.socketio.on('process_cpu_usage',(data)=>{
                 this.systemStore.refreshProcessCpuUsage(data);
             })
-            this.socketio.on('server_update',(data)=>{
+            this.socketio.on('server_update_current_players',(data)=>{
+                for(let i=0;i<this.clusterStore.clusters.length;i++){
+                    if(this.clusterStore.clusters[i].cluster_name == data.cluster_name){
+                        this.clusterStore.clusters[i].current_players = data.current_players;
+                    }
+                }
+            })
+            this.socketio.on('server_update_status',(data)=>{
                 for(let i=0;i<this.clusterStore.clusters.length;i++){
                     if(this.clusterStore.clusters[i].cluster_name == data.cluster_name){
                         this.clusterStore.clusters[i].status = data.status;
@@ -159,6 +169,9 @@ export default{
                         // }
                     }
                 }
+            })
+            this.socketio.on('downloading',(data)=>{
+                this.downloadStore.addMessage(data);
             })
         },
     },

@@ -79,6 +79,12 @@
                         <input type="text" v-model="cluster.caves_server_port">
                     </div>
                 </div>
+                <div class="port-container">
+                    <div class="label">通信端口 :</div>
+                    <div class="input-container">
+                        <input type="text" v-model="cluster.master_port">
+                    </div>
+                </div>
             </div>
             <div class="item">
                 <label class="submit" @click="handleSetRoom">保存</label>
@@ -108,6 +114,7 @@ export default{
                 pause_when_empty:true,
                 vote_enabled:true,
                 vote_kick_enabled:true,
+                master_port:null,
                 master_server_port:null,
                 caves_server_port:null,
             },
@@ -297,6 +304,6 @@ input:invalid {
     align-items: center;
     /* justify-content: center; */
     height: 100%;
-    width: 40%;
+    width: 25%;
 }
 </style>

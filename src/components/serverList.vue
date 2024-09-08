@@ -41,7 +41,7 @@
             <div class="add-item" @click="showMenu('add')">
                 新建<i class="ri-add-circle-line icon"></i>
             </div>
-            <div class="add-item">
+            <div class="add-item" @click="handleUpload">
                 上传<i class="ri-upload-cloud-line icon"></i>
             </div>
         </div>
@@ -84,7 +84,7 @@ export default{
             })
         },
         handleUpload(){
-
+            this.tipStore.showTip("功能正在开发中");
         },
         showMenu(data){
             this.tipStore.menu = data;

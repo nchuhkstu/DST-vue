@@ -1,6 +1,6 @@
 <template>
     <div :id="'worldCard'+worldCardId" class="worldCard">
-        <img class="worldCard-icon" :src="src">
+        <img class="worldCard-icon" :src="`/static/assets/${world}/${title}.png`">
         <div class="worldCard-message">
             <div class="worldCard-title">{{ title }}</div>
             <div class="worldCard-value">{{ display2 }}</div>
@@ -16,11 +16,6 @@ export default {
         value:String,
         display:String,
         world:String,
-    },
-    computed:{
-        src(){
-            return `../../public/world/${this.world}/${this.title}.png`;
-        },
     },
     data(){
         return{

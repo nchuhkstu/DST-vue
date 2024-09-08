@@ -1,5 +1,11 @@
 <template>
     <div class="SystemSet">
+        <div class="second-menu-container" v-show="downloading">
+            <div class="second-menu" id="download-log">
+                <div class="second-menu-title">正在下载中，请耐心等待</div>
+                <div v-for="message in downloadingStore.messages" class="second-menu-message">{{ message }}</div>
+            </div>
+        </div>
         <div class="item">
             <div class="label">SteamCMD路径</div>
             <div class="input-container">
@@ -14,9 +20,9 @@
             <div class="input-container">
                 <input v-model="data.exe_path">
             </div>
-            <div class="download">
+            <!-- <div class="download">
                 <div class="submit">更新游戏</div>
-            </div>
+            </div> -->
         </div>
         <div class="item">
             <div class="label">存档路径</div>
@@ -38,6 +44,7 @@
 <script>
 import { get,post,downloadingSteamCMD } from '../api/systemRequest'
 import { useTipStore } from '../store/tipStore'
+import { useDownloadStore } from '../store/downloadStore';
 export default{
     name:'systemSet',
     data(){
@@ -47,7 +54,9 @@ export default{
                 cluster_path:'',
                 exe_path:'',
             },
+            downloading:false,
             tipStore:useTipStore(),
+            downloadingStore:useDownloadStore(),
         }
     },
     methods:{
@@ -64,8 +73,11 @@ export default{
             })
         },
         handleDownloadingSteamCMD(){
+            this.downloadingStore.messages = [];
+            this.downloading = true;
             downloadingSteamCMD().then(response=>{
                 if(response.data.status == "ok"){
+                    this.downloading = false;
                     this.tipStore.showTip(response.data.message);
                 }
             })
@@ -81,6 +93,40 @@ export default{
     height: 100%;
     width: 100%;
 
+}
+.second-menu-container{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3); /* 半透明黑色背景 */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+.second-menu{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    width: 30vw;
+    height: 20vh;
+    transform: translateX(-50%);
+    background-color: rgba(110, 81, 47, 1);
+    border: 0.6vh solid rgb(169, 118, 63);
+    overflow: auto;
+    /* border-radius: 1vh; */
+    color: black;
+}
+.second-menu-title{
+    text-align: center;
+    font-size: 3vh;
+    color: rgb(201,173,117);
+    margin-bottom: 1vh;
+}
+.second-menu-message{
+    padding-left: 1vw;
+    color: rgb(201,173,117);
 }
 .item{
     height: 10%;

@@ -30,7 +30,7 @@
                 <div v-for="(group, label) in groupedCards" :key="label" class="world-set">
                     <div class="label">{{ label }}</div>
                     <div v-for="card in group" :key="card.name" class="world-card">
-                        <img class="card-icon" :src="'../../public/world/' + card.name + '.png'">
+                        <img class="card-icon" :src="'/static/world/' + card.name + '.png'">
                         <div class="card-message">
                             <div class="isChanged-background" v-show="card.value != card.origin"></div>
                             <div class="card-message-container">
