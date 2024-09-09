@@ -20,9 +20,9 @@
             <div class="input-container">
                 <input v-model="data.exe_path">
             </div>
-            <!-- <div class="download">
-                <div class="submit">更新游戏</div>
-            </div> -->
+            <div class="download">
+                <div class="submit" @click="handleUpdateGame">更新游戏</div>
+            </div>
         </div>
         <div class="item">
             <div class="label">模组路径</div>
@@ -48,7 +48,7 @@
     </div>
 </template>
 <script>
-import { get,post,downloadingSteamCMD } from '../api/systemRequest'
+import { get,post,downloadingSteamCMD,updateGame } from '../api/systemRequest'
 import { useTipStore } from '../store/tipStore'
 import { useDownloadStore } from '../store/downloadStore';
 export default{
@@ -83,6 +83,16 @@ export default{
             this.downloadingStore.messages = [];
             this.downloading = true;
             downloadingSteamCMD().then(response=>{
+                if(response.data.status == "ok"){
+                    this.downloading = false;
+                    this.tipStore.showTip(response.data.message);
+                }
+            })
+        },
+        handleUpdateGame(){
+            this.downloadingStore.messages = [];
+            this.downloading = true;
+            updateGame().then(response=>{
                 if(response.data.status == "ok"){
                     this.downloading = false;
                     this.tipStore.showTip(response.data.message);

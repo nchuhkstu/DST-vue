@@ -25,3 +25,10 @@ export function downloadingSteamCMD(){
         method: 'get'
     })
 }
+
+export function updateGame(){
+    return request({
+        url:'/system/update_game',
+        method: 'get'
+    })
+}
