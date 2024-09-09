@@ -108,9 +108,10 @@ export default{
                 this.showMenu('');
                 return;
             }
-            this.clusterStore.clusters.splice(this.index, 1);
             Delete(this.server.cluster_name).then(response=>{
-                this.tipStore.showTip('存档已删除');
+                if(response.data.status == 'ok')
+                    this.clusterStore.clusters.splice(this.index, 1);
+                this.tipStore.showTip(response.data.message);
                 this.showMenu('');
             })
         },

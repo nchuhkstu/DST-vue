@@ -25,6 +25,12 @@
             </div> -->
         </div>
         <div class="item">
+            <div class="label">模组路径</div>
+            <div class="input-container">
+                <input v-model="data.mod_path">
+            </div>
+        </div>
+        <div class="item">
             <div class="label">存档路径</div>
             <div class="input-container">
                 <input v-model="data.cluster_path">
@@ -53,6 +59,7 @@ export default{
                 steamCMD_path:'',
                 cluster_path:'',
                 exe_path:'',
+                mod_path:'',
             },
             downloading:false,
             tipStore:useTipStore(),
