@@ -12,7 +12,7 @@
                 <input v-model="data.steamCMD_path">
             </div>
             <div class="download">
-                <div class="submit" @click="handleDownloadingSteamCMD">下载SteamCMD</div>
+                <div class="submit2" @click="handleDownloadingSteamCMD">下载SteamCMD</div>
             </div>
         </div>
         <div class="item">
@@ -21,7 +21,7 @@
                 <input v-model="data.exe_path">
             </div>
             <div class="download">
-                <div class="submit" @click="handleUpdateGame">更新游戏</div>
+                <div class="submit2" @click="handleUpdateGame">下载/更新服务器</div>
             </div>
         </div>
         <div class="item">
@@ -84,8 +84,10 @@ export default{
             this.downloading = true;
             downloadingSteamCMD().then(response=>{
                 if(response.data.status == "ok"){
-                    this.downloading = false;
-                    this.tipStore.showTip(response.data.message);
+                    setTimeout(()=>{
+                        this.downloading = false;
+                        this.tipStore.showTip(response.data.message);
+                    }, 2000)
                 }
             })
         },
@@ -94,8 +96,10 @@ export default{
             this.downloading = true;
             updateGame().then(response=>{
                 if(response.data.status == "ok"){
-                    this.downloading = false;
-                    this.tipStore.showTip(response.data.message);
+                    setTimeout(()=>{
+                        this.downloading = false;
+                        this.tipStore.showTip(response.data.message);
+                    }, 2000)
                 }
             })
         }
@@ -147,8 +151,8 @@ export default{
 }
 .item{
     height: 10%;
-    margin: 1vh 15%;
-    width: 70%;
+    margin: 1vh 20%;
+    width: 60%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,20 +162,21 @@ export default{
 .download{
     position: absolute;
     left: 100%;
-    top: 0%;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .label{
-    width: 25%;
+    width: 20%;
     font-size: 2vh;
     font-weight: bold;
     color: rgb(201,173,117);
 }
 .input-container{
     height: 100%;
-    width: 65%;
+    width: 75%;
     display: flex;
     align-items: center;
 }
@@ -206,6 +211,19 @@ input:focus{
     color: black;
     cursor: pointer;
     border: 0.3vh solid rgb(118,82,44);
+}
+.submit2{
+    padding: 1vh 0vw;
+    font-size: 2.5vh;
+    font-weight: bold;
+    background-color: rgb(228,196,118);
+    margin: 0 0.5vw;
+    border-radius: 1vh;
+    color: black;
+    cursor: pointer;
+    border: 0.3vh solid rgb(118,82,44);
+    width: 10vw;
+    text-align: center;
 }
 .submit:hover{
     background-color: rgb(242,222,155);

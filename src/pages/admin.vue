@@ -26,10 +26,10 @@
                     <div class="navigation-icon"><i class="ri-earth-line"></i></div>
                     <div class="navigation-font">世界设置</div>
                 </div>
-                <!-- <div class="navigation" id="modSet" @click="changeComponent('modSet')">
+                <div class="navigation" id="modSet" @click="changeComponent('modSet')">
                     <div class="navigation-icon"><i class="ri-box-3-line"></i></div>
                     <div class="navigation-font">模组设置</div>
-                </div> -->
+                </div>
                 <div class="navigation" id="resourceUsage" @click="changeComponent('resourceUsage')">
                     <div class="navigation-icon"><i class="ri-line-chart-line"></i></div>
                     <div class="navigation-font">资源占用</div>
@@ -44,7 +44,7 @@
             <div class="attention-container">
                 <div class="attention">未经授权,禁止商用</div>
                 <div class="attention">面板版本 : 1.3.1</div>
-                <div class="attention">游戏版本:XXXXXX</div>
+                <div class="attention">游戏版本:{{version}}</div>
                 <div class="link"></div>
             </div>
             <div class="function">
@@ -69,10 +69,11 @@ import io from 'socket.io-client';
 import { useLogStore } from '../store/logStore'
 import { useTipStore } from '../store/tipStore'
 import { useSystemStore } from '../store/systemStore'
-import { getSystemInfo } from '../api/systemRequest';
+import { getSystemInfo,gameVersion } from '../api/systemRequest';
 import { backtrack } from '../api/serverRequest'
 import { useClusterStore } from '../store/clusterStore'
 import { useDownloadStore } from '../store/downloadStore'
+import { version } from 'vue'
 export default{
     components:{
         serverList,
@@ -87,13 +88,14 @@ export default{
     data(){
         return{
             activeComponent:'serverList',
-            socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
+            socketio:io('http://127.0.0.1:8081',{transports:['websocket']}),
             // socketio:io(window.location.host,{transports:['websocket']}),
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),
             clusterStore:useClusterStore(),
             downloadStore:useDownloadStore(),
+            version:'XXXXXX'
         }
     },
     methods:{
@@ -143,6 +145,12 @@ export default{
                 document.head.appendChild(dynamicStyle);
             })
         },
+        handleGetGameVersion(){
+            gameVersion().then(response=>{
+                if(response.data.status == "ok")
+                    this.version = response.data.message;
+            })
+        },
         init(){
             this.socketio.on('log',(data)=>{
                 this.logStore.addLog(data);
@@ -178,6 +186,7 @@ export default{
     mounted(){
         this.init();
         this.handleGetSystemInfo();
+        this.handleGetGameVersion();
     }
 }
 </script>

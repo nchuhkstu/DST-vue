@@ -32,3 +32,10 @@ export function updateGame(){
         method: 'get'
     })
 }
+
+export function gameVersion(){
+    return request({
+        url:'/system/game_version',
+        method: 'get'
+    })
+}
