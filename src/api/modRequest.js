@@ -10,9 +10,9 @@ export function get_mods(FormData){
         },
     })
 }
-export function get(){
+export function get(cluster_name){
     return request({
-        url:'/mod',
+        url:`/mod/${cluster_name}`,
         method: 'get'
     })
 }
@@ -21,6 +21,18 @@ export function focus_mod(data){
         url:'/mod',
         method: 'post',
         data:data,
+    })
+}
+export function enable_mod(cluster_name,mod_id){
+    return request({
+        url:`/mod/${cluster_name}/${mod_id}`,
+        method: 'get',
+    })
+}
+export function disable_mod(cluster_name,mod_id){
+    return request({
+        url:`/mod/disable/${cluster_name}/${mod_id}`,
+        method: 'get',
     })
 }
 export function delete_mod(mod_id){

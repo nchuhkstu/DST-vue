@@ -21,9 +21,10 @@
                             <div class="left-mod-message">
                                 <div class="left-mod-message-top">{{ mod.title }}</div>
                                 <div class="left-mod-message-body">
-                                    <div class="mod-status">禁用</div>
-                                    <i class="ri-checkbox-blank-line mod-status-button"></i>
-                                    <i class="ri-checkbox-line mod-status-button"></i>
+                                    <div class="mod-status1" v-show="!mod.status">禁用</div>
+                                    <div class="mod-status2" v-show="mod.status">启用</div>
+                                    <i class="ri-checkbox-blank-line mod-status-button" @click="enableMod(mod.mod_id,index)" v-show="!mod.status"></i>
+                                    <i class="ri-checkbox-line mod-status-button" @click="disableMod(mod.mod_id,index)" v-show="mod.status"></i>
                                 </div>
                             </div>
                         </div>
@@ -41,6 +42,8 @@
                     <div class="set-bottom">
                         <div class="mod-content" v-html="mods_focus[index].content"></div>
                         <div class="mod-content-bottom">
+                            <div class="mod-status-right1" v-show="mods_focus[index].status">这个模组被启用。</div>
+                            <div class="mod-status-right2" v-show="!mods_focus[index].status">此模组被禁用。</div>
                             <i class="ri-delete-bin-5-line mod-option" @click="deleteMod(index)"></i>
                             <i class="ri-tools-fill mod-option"></i>
                             <i class="ri-download-fill mod-option"></i>
@@ -84,7 +87,7 @@
 <script>
 import {useClusterStore} from '../store/clusterStore'
 import { useTipStore } from '../store/tipStore';
-import { get_mods,focus_mod,get,delete_mod } from '../api/modRequest';
+import { get_mods,focus_mod,get,delete_mod,enable_mod,disable_mod } from '../api/modRequest';
 export default{
     name:'modSet',
     data(){
@@ -105,6 +108,7 @@ export default{
     methods:{
         changeIndex(index){
             this.clusterStore.setIndex(Number(index));
+            this.handleGet();
         },
         handleGetMods(){
             return new Promise((resolve,reject)=>{
@@ -133,12 +137,11 @@ export default{
             this.index = index;
         },
         handleGet(){
-            get().then(response=>{
-                console.log(response.data)
+            get(this.clusterStore.clusters[this.clusterStore.index].cluster_name).then(response=>{
+                this.mods_focus=[]
                 for(let i=0;i<response.data.length;i++){
                     this.mods_focus.push(response.data[i]);
                 }
-                console.log(this.mods_focus);
             })
         },
         nextPage(){
@@ -182,6 +185,20 @@ export default{
                     mod.focusing = false;
                 }
                 this.tipStore.showTip(response.data.message);
+            })
+        },
+        enableMod(mod_id,index){
+            enable_mod(this.clusterStore.clusters[this.clusterStore.index].cluster_name,mod_id).then(response=>{
+                if(response.data.status == "ok"){
+                    this.mods_focus[index].status = true
+                }
+            })
+        },
+        disableMod(mod_id,index){
+            disable_mod(this.clusterStore.clusters[this.clusterStore.index].cluster_name,mod_id).then(response=>{
+                if(response.data.status == "ok"){
+                    this.mods_focus[index].status = false
+                }
             })
         },
         deleteMod(index){
@@ -275,9 +292,8 @@ export default{
 }
 .set-left{
     height: 100%;
-    width: calc(42% - 0.3vh);
-    border-right: 0.3vh solid orange;
-    overflow: auto
+    width: calc(42% - 0vh);
+    /* border-right: 0.3vh solid orange; */
 }
 .set-left-top{
     margin: 0 3%;
@@ -311,6 +327,7 @@ export default{
 .set-left-body{
     width: 100%;
     height: 90%;
+    overflow: auto
 }
 .left-mod{
     border: 0.3vh solid black;
@@ -322,7 +339,6 @@ export default{
     border-radius: 1vh;
     margin-left: 3%;
     margin-right: 3%;
-    cursor: pointer;
 }
 .left-mod-img-container{
     height: 100%;
@@ -354,9 +370,15 @@ export default{
     display: flex;
     align-items: center;
 }
-.mod-status{
+.mod-status1{
     height: 4vh;
     font-size: 3vh;
+    color: gray;
+}
+.mod-status2{
+    height: 4vh;
+    font-size: 3vh;
+    color: rgb(21, 185, 21);
 }
 .mod-status-button{
     height: 4vh;
@@ -367,10 +389,12 @@ export default{
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 .set-right{
+    padding-left: 1vw;
     height: 100%;
-    width: 58%;
+    width: calc(58% - 1vw);
     color:rgb(200, 200, 200);
 }
 .set-top-left{
@@ -402,13 +426,14 @@ export default{
     height: 30%;
 }
 .set-top{
-    height: calc(20% - 0.3vh);
+    height: calc(20% - 0vh);
     width: 100%;
-    border-bottom: 0.3vh solid orange;
+    /* border-bottom: 0.3vh solid orange; */
     display: flex;
 }
 .set-bottom{
-    height: 80%;
+    margin-top: 1vh;
+    height: calc(80% - 1vh);
     width: 100%;
 }
 .mod-content{
@@ -421,6 +446,18 @@ export default{
     height: 15%;
     display: flex;
     align-items: center;
+}
+.mod-status-right1{
+    display: flex;
+    align-items: center;
+    font-size: 3vh;
+    color: rgb(21, 185, 21);
+}
+.mod-status-right2{
+    display: flex;
+    align-items: center;
+    font-size: 3vh;
+    color: gray;
 }
 .mod-option{
     height: 60%;
