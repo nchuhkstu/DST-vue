@@ -131,6 +131,9 @@ export default{
 
         },
         changeActive(active){
+            if(active == "set"){
+                this.handleGet();
+            }
             this.active = active;
         },
         showMod(index){
@@ -142,6 +145,7 @@ export default{
                 for(let i=0;i<response.data.length;i++){
                     this.mods_focus.push(response.data[i]);
                 }
+                this.mods_focus.sort((a,b)=>{return (b.status == true) - (a.status == true)});
             })
         },
         nextPage(){
@@ -169,7 +173,6 @@ export default{
         },
         focusMod(mod){
             if(mod.focus){
-
                 return;
             }
             if(mod.focusing ==true){
@@ -179,11 +182,13 @@ export default{
             mod.focusing = true;
             document.getElementById(mod.mod_id).textContent = "订阅中"
             focus_mod(mod).then(response=>{
-                this.mods_focus.push(mod);
                 if(response.data.status=="ok"){
                     document.getElementById(mod.mod_id).textContent = "已订阅"
-                    mod.focusing = false;
                 }
+                else{
+                    document.getElementById(mod.mod_id).textContent = "订阅失败"
+                }
+                mod.focusing = false;
                 this.tipStore.showTip(response.data.message);
             })
         },
@@ -191,6 +196,7 @@ export default{
             enable_mod(this.clusterStore.clusters[this.clusterStore.index].cluster_name,mod_id).then(response=>{
                 if(response.data.status == "ok"){
                     this.mods_focus[index].status = true
+                    this.mods_focus.sort((a,b)=>{return (b.status == true) - (a.status == true)});
                 }
             })
         },
@@ -198,6 +204,7 @@ export default{
             disable_mod(this.clusterStore.clusters[this.clusterStore.index].cluster_name,mod_id).then(response=>{
                 if(response.data.status == "ok"){
                     this.mods_focus[index].status = false
+                    this.mods_focus.sort((a,b)=>{return (b.status == true) - (a.status == true)});
                 }
             })
         },
@@ -327,7 +334,7 @@ export default{
 .set-left-body{
     width: 100%;
     height: 90%;
-    overflow: auto
+    overflow-y: scroll;
 }
 .left-mod{
     border: 0.3vh solid black;
