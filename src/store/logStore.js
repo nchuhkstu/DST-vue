@@ -10,9 +10,11 @@ export const useLogStore = defineStore('log', {
         }
         this.log[data.cluster_name].push({"time":data.time,"message":data.message});
         var container = document.getElementById('log');
-        if (container) {
-            container.scrollTop = container.scrollHeight - container.clientHeight;
-        }
+        requestAnimationFrame(()=>{
+          if (container) {
+              container.scrollTop = container.scrollHeight - container.clientHeight;
+          }
+        })
     },
     setLog(cluster_name,data){
       if (this.log[data.cluster_name] === undefined)

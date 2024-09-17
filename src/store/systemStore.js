@@ -35,6 +35,7 @@ export const useSystemStore = defineStore('system', {
     refreshRunningInformation(data) {
         this.system.cpuData = data.cpuData;
         this.system.memoryData = data.memoryData;
+        this.system.networkData = data.networkData;
         // this.system.networkData = data.networkData;
         if(Object.keys(this.charts_data).length==0){
           for(let i=0;i<Object.keys(this.system.cpuData.usage).length;i++){

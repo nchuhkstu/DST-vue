@@ -1,6 +1,7 @@
 <template>
     <div class="modSet">
         <div class="list">
+            <div class="list-title">存档列表</div>
             <div class="list-item" :id="`list-item-${index}`" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
         <div class="set-container">
@@ -45,8 +46,8 @@
                             <div class="mod-status-right1" v-show="mods_focus[index].status">这个模组被启用。</div>
                             <div class="mod-status-right2" v-show="!mods_focus[index].status">此模组被禁用。</div>
                             <i class="ri-delete-bin-5-line mod-option" @click="deleteMod(index)"></i>
-                            <i class="ri-tools-fill mod-option"></i>
-                            <i class="ri-download-fill mod-option"></i>
+                            <!-- <i class="ri-tools-fill mod-option"></i>
+                            <i class="ri-download-fill mod-option"></i> -->
                             <i class="ri-global-line mod-option" @click="information(mods_focus[index].href)"></i>
                         </div>
                     </div>
@@ -56,8 +57,8 @@
                 <div class="focus-search">
                     <div class="sorted">排序依据：最热门</div>
                     <div class="sorted">时间：有史以来</div>
-                    <input class="focus-search-input" v-model="searchContent" placeholder="搜索：饥荒联机版">
-                    <div class="focus-search-button">搜索</div>
+                    <input class="focus-search-input" v-model="searchContent" @keyup.enter="handleSearchFocus" placeholder="搜索：饥荒联机版">
+                    <div class="focus-search-button" @click="handleSearchFocus">搜索</div>
                 </div>
                 <div class="loading-container" v-show="loading">
                     <div class="loading">
@@ -140,6 +141,9 @@ export default{
             this.index = index;
         },
         handleGet(){
+            if(this.clusterStore.clusters.length==0){
+                return;
+            }
             get(this.clusterStore.clusters[this.clusterStore.index].cluster_name).then(response=>{
                 this.mods_focus=[]
                 for(let i=0;i<response.data.length;i++){
@@ -147,6 +151,11 @@ export default{
                 }
                 this.mods_focus.sort((a,b)=>{return (b.status == true) - (a.status == true)});
             })
+        },
+        handleSearchFocus(){
+            this.currentPage = 1;
+            this.mods = {};
+            this.handleGetMods();
         },
         nextPage(){
             let num = this.currentPage + 1;
@@ -243,6 +252,20 @@ export default{
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
     overflow: auto;
+    border-radius: 1vh;
+}
+.list-title{
+    border-top-left-radius: 0.5vh;
+    border-top-right-radius: 0.5vh;
+    height: calc(5% - 0.6vh);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vh;
+    font-weight: bold;
+    background-color: rgb(75,56,34);
+    color: rgb(224,173,71);
 }
 .list-item{
     width: 90%;
@@ -264,7 +287,7 @@ export default{
     color: rgb(224,173,71);
 }
 .set-container{
-    width: 83%;
+    width: 84%;
     height: calc(92% + 5.5vh);
     margin-left: 15%;
 }
@@ -518,6 +541,7 @@ export default{
     background-color: rgb(228,196,118);
     color: black;
     margin-right: 1vw;
+    cursor: pointer;
 }
 .loading-container{
     height: 88%;

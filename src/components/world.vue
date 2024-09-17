@@ -536,9 +536,8 @@ export default {
 }
 #world-set-scorllContainer{
     width: calc(100% );
-    margin: 1vh 0vw;
-    margin-bottom: 0vh;
-    height: calc(100% - 10.2vh - 0vh + 0.3vh);
+    margin-top: 1vh;
+    height: calc(100% - 9.6vh);
     overflow-y: scroll;
     display: flex;
     flex-wrap: wrap;

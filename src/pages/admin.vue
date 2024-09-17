@@ -43,7 +43,7 @@
         <div class="admin-right">
             <div class="attention-container">
                 <div class="attention">未经授权,禁止商用</div>
-                <div class="attention">面板版本 : 1.3.1</div>
+                <div class="attention">面板版本 : 1.4.0</div>
                 <div class="attention">游戏版本:{{version}}</div>
                 <div class="link"></div>
             </div>

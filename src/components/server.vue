@@ -30,7 +30,8 @@
         <div class="item">{{ server.cluster_name }}</div>
         <div class="item" style="width: calc(19% - 0.3vh);">{{ server.server_name }}</div>
         <div class="item" style="width: calc(7% - 0.3vh);">{{ server.game_mode }}</div>
-        <div class="item" style="width: calc(7% - 0.3vh);">{{ server.days }}</div>
+        <!-- <div class="item" style="width: calc(7% - 0.3vh);">{{ server.days }}</div> -->
+        <div class="item" style="width: calc(7% - 0.3vh);">XXX</div>
         <div class="item" style="width: calc(7% - 0.3vh);">{{ server.current_players + '/' + server.max_players }}</div>
         <div class="item status" style="width: calc(10% - 0.3vh);" :id="'status' + server.cluster_name"><i class="ri-alarm-warning-line"></i>{{ server.status }}</div>
         <div class="item">{{ server.port }}</div>
@@ -40,7 +41,7 @@
             <div class="operation" @click="handleSave">存档</div>
             <div class="operation" @click="showMenu('backTrack' + server.cluster_name)">回档</div>
             <div class="operation" @click="handleBackUp">备份</div>
-            <div class="operation" @click="handleRemake">重置</div>
+            <!-- <div class="operation" @click="handleRemake">重置</div> -->
             <div class="operation" @click="showMenu('delete' + server.cluster_name)">删除</div>
         </div>
     </div>

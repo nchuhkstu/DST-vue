@@ -1,11 +1,13 @@
 <template>
     <div class="cpuUsage">
-        <div class="introduce">{{ text }}</div>
-        <div class="cpuUsage-container">
+        <div class="cpuUsage-title">
+            <div class="cpuUsage-title-left">{{ text }}</div>
+            <div class="cpuUsage-title-right">{{ progress }}%</div>
+        </div>
+        <div class="cpuUsage-body">
             <div class="progress-bar">
                 <div class="progress" :style="{ width: `${progress}%` }"></div>
             </div>
-            <div class="text">{{ progress }}%</div>
         </div>
     </div>
 </template>
@@ -27,19 +29,25 @@ export default {
     height: 100%;
     width: 100%;
 }
-.introduce{
-    height: 40%;
+.cpuUsage-title{
     width: 90%;
     margin: 0 5%;
+    display: flex;
 }
-.cpuUsage-container{
+.cpuUsage-title-left{
+
+}
+.cpuUsage-title-right{
+    margin-left: auto;
+}
+.cpuUsage-body{
     height: 60%;
     width: 90%;
     margin: 0 5%;
     display: flex;
 }
 .progress-bar {
-    width: 85%;
+    width: 100%;
     height: 100%;
     background-color: #f0f0f0;
     overflow: hidden;
@@ -48,12 +56,5 @@ export default {
     height: 100%;
     background-color: #4CAF50;
     transition: width 0s ease-in-out;
-}
-.text{
-    height: 100%;
-    width: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
     <div class="runninSituation">
         <div class="list">
+            <div class="list-title">存档列表</div>
             <div class="list-item" :id="`list-item-${index}`" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
         <div class="log-container">
@@ -17,29 +18,31 @@
                 </div>
             </div>
             <div class="log-bottom">
-                <input class="log-input" placeholder="...自定义远程命令" v-model="command"></input>
+                <input class="log-input" placeholder="...自定义远程命令" v-model="command" @keyup.enter="customCommand"></input>
                 <div class="log-button" @click="customCommand">发送</div>
             </div>
         </div>
         <div class="resource-container">
-            <div class="cpu-container">
-                <div class="cpu">
-                    <cpuUsage :text="'地面cpu占用率(单核心)'" :progress="Number(parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['master'] ?? 0).toFixed(0))"></cpuUsage>
+            <div class="resource-container-item">
+                <div class="resource-item-title">CPU占用率(单核心)</div>
+                <div class="resource-item">
+                    <cpuUsage :text="'地面'" :progress="Number(parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['master'] ?? 0).toFixed(0))"></cpuUsage>
                 </div>
-                <div class="cpu">
-                    <cpuUsage :text="'洞穴cpu占用率(单核心)'" :progress="Number(parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['caves'] ?? 0).toFixed(0))"></cpuUsage>
-                </div>
-            </div>
-            <div class="memory-container">
-                <div class="memory">
-                    <memoryUsage :text="'地面内存占用'" :progress="Number(parseFloat(systemStore.process_memory_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['master'] ?? 0).toFixed(0))"></memoryUsage>
-                </div>
-                <div class="memory">
-                    <memoryUsage :text="'洞穴内存占用'" :progress="Number(parseFloat(systemStore.process_memory_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['caves'] ?? 0).toFixed(0))"></memoryUsage>
+                <div class="resource-item">
+                    <cpuUsage :text="'洞穴'" :progress="Number(parseFloat(systemStore.process_cpu_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['caves'] ?? 0).toFixed(0))"></cpuUsage>
                 </div>
             </div>
-            <div class="network-container">
-
+            <div class="resource-container-item">
+                <div class="resource-item-title">内存占用</div>
+                <div class="resource-item">
+                    <memoryUsage :text="'地面'" :progress="Number(parseFloat(systemStore.process_memory_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['master'] ?? 0).toFixed(0))"></memoryUsage>
+                </div>
+                <div class="resource-item">
+                    <memoryUsage :text="'洞穴'" :progress="Number(parseFloat(systemStore.process_memory_usage[clusterStore.clusters[clusterStore.index]?.cluster_name]?.['caves'] ?? 0).toFixed(0))"></memoryUsage>
+                </div>
+            </div>
+            <div class="resource-container-item">
+                <div class="resource-item-title">网络占用</div>
             </div>
         </div>
     </div>
@@ -135,6 +138,20 @@ export default{
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
     overflow: auto;
+    border-radius: 1vh;
+}
+.list-title{
+    border-top-left-radius: 0.5vh;
+    border-top-right-radius: 0.5vh;
+    height: calc(5% - 0.6vh);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vh;
+    font-weight: bold;
+    background-color: rgb(75,56,34);
+    color: rgb(224,173,71);
 }
 .list-item{
     width: 90%;
@@ -233,38 +250,38 @@ export default{
     background-color: rgb(242,222,155);
 }
 .resource-container{
-    height: calc(90% + 5vh);
-    width: 22%;
+    height: calc(92% + 5.5vh);
+    width: 23%;
     margin-left: 1%;
     margin-top: 0vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
 }
-.cpu-container{
-    width: 100%;
-    height: 30%;
-    margin-bottom: 11.1%;
+.resource-container-item{
+    height: calc(33.3% - 1.33vh - 1.2vh);
+    width: calc(100% - 1.2vh);
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
+    border-radius: 1vh;
 }
-.cpu{
-    height: 8vh;
-    margin-top: 2vh;
+.resource-item{
+    height: calc(50% - 1.75vh - 4vh);
+    padding: 2vh 0;
     width: 100%;
 }
-.memory-container{
-    width: 100%;
-    height: 30%;
-    margin-bottom: 11.1%;
-    background-color: rgba(110, 81, 47, 0.6);
-    border: 0.6vh solid rgb(118,82,44);
-}
-.memory{
-    height: 8vh;
-    margin-top: 2vh;
-    width: 100%;
-}
-.network-container{
-    width: 100%;
-    height: 30%;
+.resource-item-title{
+    border-top-left-radius: 0.5vh;
+    border-top-right-radius: 0.5vh;
+    padding-left: 0.5vw;
+    width: calc(100% - 0.5vw);
+    height: 3.5vh;
+    display: flex;
+    align-items: center;
+    font-size: 2vh;
+    font-weight: bold;
+    background-color: rgb(75,56,34);
+    color: rgb(224,173,71);
 }
 
 </style>

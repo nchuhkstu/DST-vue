@@ -223,11 +223,13 @@ export default{
 }
 .left{
     width: calc(20% - 1.2vh);
-    height: calc(90% + 5.5vh - 1.2vh - 2vh);
+    height: calc(92% + 5.5vh - 1.2vh - 2vh);
     margin-left: 1%;
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
     border-right: none;
+    border-top-left-radius: 1vh;
+    border-bottom-left-radius: 1vh;
     padding: 1vh 0;
 }
 .left-item{
@@ -239,7 +241,7 @@ export default{
     justify-content: center;
 }
 .left-item:hover{
-    background-color: rgb(217,217,217);
+    background-color: rgb(110,81,47);
 }
 .chart-container{
     height: 80%;
@@ -269,7 +271,7 @@ export default{
     width: 0.4vh;
     border-top: 0.6vh solid rgb(118,82,44);
     border-bottom: 0.6vh solid rgb(118,82,44);
-    height: calc(90% + 5.5vh - 1.2vh);
+    height: calc(92% + 5.5vh - 1.2vh);
     display: flex;
     align-items: center;
     background-color: rgba(110, 81, 47, 0.6);
@@ -280,12 +282,14 @@ export default{
     background-color: rgb(118,82,44);
 }
 .right{
-    width: calc(78% - 1.2vh);
-    height: calc(90% + 5.5vh - 1.2vh - 2vh);
+    width: calc(78.5% - 1.2vh);
+    height: calc(92% + 5.5vh - 1.2vh - 2vh);
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
     border-left: none;
     padding: 1vh 0;
+    border-top-right-radius: 1vh;
+    border-bottom-right-radius: 1vh;
 }
 .cpu{
     height: calc(100% - 2vh);

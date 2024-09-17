@@ -1,6 +1,7 @@
 <template>
     <div class="userManage">
         <div class="list">
+            <div class="list-title">存档列表</div>
             <div class="list-item" :id="`list-item-${index}`" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
         <div class="users">
@@ -114,6 +115,20 @@ export default{
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
     overflow: auto;
+    border-radius: 1vh;
+}
+.list-title{
+    border-top-left-radius: 0.5vh;
+    border-top-right-radius: 0.5vh;
+    height: calc(5% - 0.6vh);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vh;
+    font-weight: bold;
+    background-color: rgb(75,56,34);
+    color: rgb(224,173,71);
 }
 .list-item{
     width: 90%;
@@ -136,10 +151,14 @@ export default{
 }
 .users{
     margin-left: 15%;
-    height: calc(92% + 5vh);
-    width: 85%;
+    height: calc(92% + 5.5vh - 1.2vh);
+    width: calc(84% - 1.2vh);
+    border: 0.6vh solid rgb(118,82,44);
+    border-radius: 1vh;
 }
 .users-head{
+    border-top-left-radius: 0.25vh;
+    border-top-right-radius: 0.25vh;
     width: 100%;
     height: 10%;
     background-color: rgb(212,171,66);
