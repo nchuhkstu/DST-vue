@@ -8,11 +8,7 @@
             <div class="navigation-container">
                 <div class="navigation selected" id="serverList" @click="changeComponent('serverList')">
                     <div class="navigation-icon"><i class="ri-server-line"></i></div>
-                    <div class="navigation-font">服务器列表</div>
-                </div>
-                <div class="navigation" id="runningSituation" @click="changeComponent('runningSituation')">
-                    <div class="navigation-icon"><i class="ri-computer-line"></i></div>
-                    <div class="navigation-font">运行概况</div>
+                    <div class="navigation-font">控制台</div>
                 </div>
                 <div class="navigation" id="userManage" @click="changeComponent('userManage')">
                     <div class="navigation-icon"><i class="ri-user-line"></i></div>
@@ -57,7 +53,6 @@
 </template>
 <script>
 import serverList from '../components/serverList.vue'
-import runningSituation from '../components/runningSituation.vue'
 import userManage from '../components/userManage.vue'
 import roomSet from '../components/roomSet.vue'
 import worldSet from '../components/worldSet.vue'
@@ -77,7 +72,6 @@ import { version } from 'vue'
 export default{
     components:{
         serverList,
-        runningSituation,
         userManage,
         roomSet,
         worldSet,

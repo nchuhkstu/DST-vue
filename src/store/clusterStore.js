@@ -3,6 +3,7 @@ export const useClusterStore = defineStore('cluster', {
   state: () => ({
     clusters:[],
     index:0,
+    is_detail:false,
   }),
   actions: {
     setIndex(index){
@@ -13,7 +14,10 @@ export const useClusterStore = defineStore('cluster', {
       document.querySelectorAll('.list-item').forEach(function(item) {
         item.classList.remove('selected');
       });
-      document.getElementById("list-item-" + this.index).classList.add("selected");
+      const list = document.getElementById("list-item-" + this.index)
+      if(list){
+        list.classList.add("selected");
+      }
       requestAnimationFrame(()=>{
         var container = document.getElementById('log');
         if (container) {

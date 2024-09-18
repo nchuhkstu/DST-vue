@@ -25,30 +25,19 @@
             <div class="second-menu-submit" @click="handleAdd">确定</div>
         </div>
     </div>
-    <div class="head">
-        <div class="item">存档名</div>
-        <div class="item" style="width: calc(19% - 0.3vh);">房间名</div>
-        <div class="item" style="width: calc(7% - 0.3vh);">模式</div>
-        <div class="item" style="width: calc(7% - 0.3vh);">天数</div>
-        <div class="item" style="width: calc(7% - 0.3vh);">人数</div>
-        <div class="item" style="width: calc(10% - 0.3vh);">状态</div>
-        <div class="item">占用端口</div>
-        <div class="item">操作</div>
+    <div class="serverList" v-if="!clusterStore.is_detail">
+        <server v-for="(server,index) in clusterStore.clusters" :index="index" :key="index" :server="server" @click=changeIndex(index)></server>
+        <div class="item" @click="showMenu('add')"><i class="ri-add-circle-line icon"></i></div>
+        <div class="item" @click="handleUpload"><i class="ri-upload-cloud-line icon"></i></div>
     </div>
-    <div class="container">
-        <server v-for="(server,index) in clusterStore.clusters" :index="index" :key="index" :server="server"></server>
-        <div class="add" >
-            <div class="add-item" @click="showMenu('add')">
-                新建<i class="ri-add-circle-line icon"></i>
-            </div>
-            <div class="add-item" @click="handleUpload">
-                上传<i class="ri-upload-cloud-line icon"></i>
-            </div>
-        </div>
+    <div class="server-current" v-if="clusterStore.is_detail">
+        <serverDetail :index="clusterStore.index" :server="clusterStore.clusters[clusterStore.index]"></serverDetail>
     </div>
 </template>
 <script>
 import server from '../components/server.vue'
+import serverDetail from '../components/serverDetail.vue'
+// import serverDetail from './serverDetail.vue';
 import { get,add } from '../api/cluserRequest'
 import { useClusterStore} from '../store/clusterStore'
 import { useTipStore } from '../store/tipStore';
@@ -56,6 +45,7 @@ export default{
     name:'serverList',
     components:{
         server,
+        serverDetail,
     },
     data(){
         return{
@@ -91,7 +81,13 @@ export default{
         },
         changeAddClusterMode(data){
             this.add_cluster_mode = data;
-        }
+        },
+        changeIndex(index){
+            this.clusterStore.setIndex(Number(index));
+            console.log(index)
+            console.log(this.clusterStore.clusters[this.clusterStore.index])
+            this.clusterStore.is_detail = true;
+        },
     },
     mounted(){
         this.handleGet()
@@ -110,16 +106,9 @@ export default{
     color: black;
 }
 .item{
-    height: 50%;
-    width: calc(10% - 0.3vh);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 0.3vh solid black;
-}
-.item:last-child{
-    width: 30%;
-    border: none;
+    border: 0.6vh solid rgb(118,82,44);
+    border-radius: 1vh;
+    cursor: pointer;
 }
 .container{
     height: 90%;
@@ -155,8 +144,9 @@ export default{
     background-color: rgb(242,222,155);
 }
 .icon{
-    margin-left: 0.5vw;
-    font-size: 3vh;
+    display: flex;
+    justify-content: center;
+    font-size: 15vh;
 }
 .second-menu-container{
     width: 100vw;
@@ -278,5 +268,20 @@ export default{
 }
 .second-menu-submit:hover{
     background-color: rgb(242,222,155);
+}
+.serverList{
+    height: calc(92% + 5vh);
+    width:98%;
+    margin: 0 1%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: calc(33.33% - 1.34vh);
+    gap: 2vh 1vw;
+    overflow: auto;
+}
+.server-current{
+    height: calc(92% + 5vh);
+    width:98%;
+    margin: 0 1%;
 }
 </style>

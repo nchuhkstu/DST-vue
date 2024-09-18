@@ -27,23 +27,13 @@
                 <div class="second-menu-submit" @click="handleDelete">确定</div>
             </div>
         </div>
-        <div class="item">{{ server.cluster_name }}</div>
-        <div class="item" style="width: calc(19% - 0.3vh);">{{ server.server_name }}</div>
-        <div class="item" style="width: calc(7% - 0.3vh);">{{ server.game_mode }}</div>
-        <!-- <div class="item" style="width: calc(7% - 0.3vh);">{{ server.days }}</div> -->
-        <div class="item" style="width: calc(7% - 0.3vh);">XXX</div>
-        <div class="item" style="width: calc(7% - 0.3vh);">{{ server.current_players + '/' + server.max_players }}</div>
-        <div class="item status" style="width: calc(10% - 0.3vh);" :id="'status' + server.cluster_name"><i class="ri-alarm-warning-line"></i>{{ server.status }}</div>
-        <div class="item">{{ server.port }}</div>
-        <div class="operation-container">
-            <div class="operation" @click="handleStart">启动</div>
-            <div class="operation" @click="showMenu('stop' + server.cluster_name)">停止</div>
-            <div class="operation" @click="handleSave">存档</div>
-            <div class="operation" @click="showMenu('backTrack' + server.cluster_name)">回档</div>
-            <div class="operation" @click="handleBackUp">备份</div>
-            <!-- <div class="operation" @click="handleRemake">重置</div> -->
-            <div class="operation" @click="showMenu('delete' + server.cluster_name)">删除</div>
-        </div>
+        <div class="item">存档名称：{{ server.cluster_name }}</div>
+        <div class="item">房间名称：{{ server.server_name }}</div>
+        <div class="item">游戏模式：{{ server.game_mode }}</div>
+        <div class="item">当前天数：{{ server.days }}</div>
+        <div class="item">游玩人数：{{ server.current_players + '/' + server.max_players }}</div>
+        <div class="item">占用端口：{{ server.port }}</div>
+        <div class="item status" :id="'status' + server.cluster_name">游戏状态：{{ server.status }}<i class="ri-alarm-warning-line"></i></div>
     </div>
 </template>
 <script>
@@ -137,21 +127,19 @@ export default{
 </script>
 <style scoped>
 .server{
-    height: 11.11%;
-    width: 100%;
+    border: 0.6vh solid rgb(118,82,44);
+    border-radius: 1vh;
     display: flex;
-    border-top: 0.3vh solid rgb(118,82,44);
-}
-.server:first-child{
-    border-top: none;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1vh 0.5vw;
+    cursor: pointer;
 }
 .item{
     font-size: 2vh;
-    height: 100%;
-    width: 10%;
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 .operation-container{
     height: 100%;
