@@ -50,8 +50,14 @@
                     </div>
                 </div>
                 <div class="chat-container">
-                    <div class="chat-title">聊天记录</div>
-                    <div class="chat-content"></div>
+                    <div class="chat-title" >聊天记录</div>
+                    <div class="chat-content" id="chat-container">
+                        <div class="chat-card" v-for="message in chatStore.messages">
+                            <div class="chat-time-container">[<div class="chat-time">{{ formatTime(message.time) }}</div>]</div>
+                            <div class="chat-name">{{message.name}}:</div>
+                            <div class="chat-message">{{message.message}}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="bottom">
@@ -141,6 +147,8 @@ import memoryUsage from './memoryUsage.vue'
 import { useLogStore } from '../store/logStore';
 import { useUserStore } from '../store/userStore';
 import { getUsers } from '../api/userRequest';
+import { getChat } from '../api/chatRequest';
+import { useChatStore } from '../store/chatStore';
 export default{
     name:'serverDetail',
     props:{
@@ -158,11 +166,30 @@ export default{
             systemStore:useSystemStore(),
             logStore:useLogStore(),
             userStore:useUserStore(),
+            chatStore:useChatStore(),
             days:1,
             command:"",
+            chat:{
+                time:Date.now(),
+                page_size:10,
+                current_page:1,
+            }
         }
     },
     methods:{
+        formatTime(timestamp) {
+            const date = new Date(timestamp * 1000);
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            };
+            return date.toLocaleString('zh-CN', options);
+        },
         handleStart(){
             if(this.clusterStore.clusters[this.index].status == "运行中" || this.clusterStore.clusters[this.index].status == "启动中"){
                 this.tipStore.showTip("服务器正在" + this.clusterStore.clusters[this.index].status);
@@ -249,13 +276,34 @@ export default{
                 this.userStore.users = response.data
             })
         },
+        handleGetChat(){
+            getChat(this.clusterStore.clusters[this.clusterStore.index].cluster_name,this.chat.time,this.chat.page_size,this.chat.current_page).then(response=>{
+                console.log(response.data.length)
+                for(let i= 0; i<response.data.length;i++){
+                    this.chatStore.addOldMessage(response.data[i])
+                }
+                console.log(this.chatStore.messages)
+            })
+        }
     },
     mounted(){
         if(this.server.status == '运行中' || this.server.status == '启动中'){
             document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
         }
+        this.handleGetChat();
         this.handleGetUsers();
         this.getLog();
+        setTimeout(()=>{
+            document.getElementById('chat-container').addEventListener('scroll',()=>{
+                const target = document.getElementById('chat-container');
+                if (target.scrollTop <= target.scrollHeight * 0.1) {
+                    this.chat.current_page++;
+                    this.chatStore.fixed = false;
+                    this.handleGetChat();
+                }
+            })
+        },1000)
+
     },
     updated(){
         // if(this.server.status == '运行中' || this.server.status == '启动中'){
@@ -533,6 +581,26 @@ export default{
     height: calc(100% - 3.5vh);
     width: 100%;
     background-color: rgba(110, 81, 47, 0.6);
+    overflow: auto;
+}
+.chat-card{
+    display: flex;
+}
+.chat-time-container{
+    margin-left: 0.5vw;
+    color: rgb(255, 215, 0);
+    display: flex;
+}
+.chat-time{
+    color: rgb(181, 206, 168);
+}
+.chat-name{
+    margin-left: 0.3vw;
+    color: rgb(224, 173, 71);
+}
+.chat-message{
+    margin-left: 0.2vw;
+    color: white;
 }
 .bottom{
 
