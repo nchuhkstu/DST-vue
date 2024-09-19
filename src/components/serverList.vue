@@ -107,6 +107,7 @@ export default{
     border: 0.6vh solid rgb(118,82,44);
     border-radius: 1vh;
     cursor: pointer;
+    background-color: rgba(110, 81, 47, 0.6);
 }
 .container{
     height: 90%;

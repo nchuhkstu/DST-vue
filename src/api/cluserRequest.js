@@ -11,6 +11,12 @@ export function add(){
         method: 'get'
     })
 }
+export function getMap(cluster_name){
+    return request({
+        url:`/cluster/getMap/${cluster_name}`,
+        method: 'get'
+    })
+}
 export function getRoom(cluster_name){
     return request({
         url:`/cluster/${cluster_name}`,

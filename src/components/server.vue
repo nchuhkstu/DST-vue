@@ -23,6 +23,11 @@ export default{
     },
     methods:{
 
+    },
+    mounted(){
+        if(this.server.status == '运行中' || this.server.status == '启动中'){
+            document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
+        }
     }
 }
 </script>
@@ -35,6 +40,7 @@ export default{
     justify-content: space-between;
     padding: 1vh 0.5vw;
     cursor: pointer;
+    background-color: rgba(110, 81, 47, 0.6);
 }
 .item{
     font-size: 2vh;

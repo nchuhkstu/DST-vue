@@ -592,6 +592,7 @@ export default{
     width: 100%;
     background-color: rgba(110, 81, 47, 0.6);
     overflow: auto;
+    font-size: 1.75vh;
 }
 .chat-card{
     display: flex;

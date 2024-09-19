@@ -11,6 +11,10 @@
                     <div class="navigation-font">控制台</div>
                     <div class="change-button" v-if="clusterStore.is_detail && activeComponent == 'serverList'" @click="back"><i class="ri-arrow-go-back-line"></i></div>
                 </div>
+                <div class="navigation" id="map" @click="changeComponent('map')">
+                    <div class="navigation-icon"><i class="ri-user-line"></i></div>
+                    <div class="navigation-font">地图</div>
+                </div>
                 <div class="navigation" id="userManage" @click="changeComponent('userManage')">
                     <div class="navigation-icon"><i class="ri-user-line"></i></div>
                     <div class="navigation-font">玩家管理</div>
@@ -71,6 +75,7 @@ import { useClusterStore } from '../store/clusterStore'
 import { useDownloadStore } from '../store/downloadStore'
 import { useChatStore } from '../store/chatStore'
 import { version } from 'vue'
+import map from '../components/map.vue'
 export default{
     components:{
         serverList,
@@ -79,7 +84,8 @@ export default{
         worldSet,
         modSet,
         resourceUsage,
-        systemSet
+        systemSet,
+        map,
     },
     data(){
         return{
