@@ -84,8 +84,6 @@ export default{
         },
         changeIndex(index){
             this.clusterStore.setIndex(Number(index));
-            console.log(index)
-            console.log(this.clusterStore.clusters[this.clusterStore.index])
             this.clusterStore.is_detail = true;
         },
     },

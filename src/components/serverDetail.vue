@@ -173,6 +173,7 @@ export default{
                 time:Date.now(),
                 page_size:10,
                 current_page:1,
+                totalPage:1,
             }
         }
     },
@@ -204,6 +205,7 @@ export default{
                 else{
                     this.clusterStore.clusters[this.index].status = "启动失败";
                 }
+                this.logStore.log = {};
             })
         },
         handleStop(){
@@ -278,15 +280,23 @@ export default{
         },
         handleGetChat(){
             getChat(this.clusterStore.clusters[this.clusterStore.index].cluster_name,this.chat.time,this.chat.page_size,this.chat.current_page).then(response=>{
-                console.log(response.data.length)
-                for(let i= 0; i<response.data.length;i++){
-                    this.chatStore.addOldMessage(response.data[i])
+                const target = document.getElementById('chat-container');
+                const start_height = target.scrollHeight;
+                const scrollTop = target.scrollTop;
+                for(let i= 0; i<response.data.messages.length;i++){
+                    this.chatStore.addOldMessage(response.data.messages[i])
                 }
-                console.log(this.chatStore.messages)
+                requestAnimationFrame(()=>{
+                    const end_height = target.scrollHeight;
+                    target.scrollTop = scrollTop + end_height - start_height;
+                })
+                
+                this.chat.totalPage = Math.ceil(response.data.total / this.chat.page_size);
             })
         }
     },
     mounted(){
+        this.chatStore.messages = [];
         if(this.server.status == '运行中' || this.server.status == '启动中'){
             document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
         }
@@ -297,18 +307,18 @@ export default{
             document.getElementById('chat-container').addEventListener('scroll',()=>{
                 const target = document.getElementById('chat-container');
                 if (target.scrollTop <= target.scrollHeight * 0.1) {
-                    this.chat.current_page++;
-                    this.chatStore.fixed = false;
-                    this.handleGetChat();
+                    if(this.chat.current_page<this.chat.totalPage){
+                        this.chat.current_page++;
+                        this.chatStore.fixed = false;
+                        this.handleGetChat();
+                    }
                 }
             })
-        },1000)
+        },100)
 
     },
     updated(){
-        // if(this.server.status == '运行中' || this.server.status == '启动中'){
-        //     document.getElementById("status" + this.server.cluster_name).style.color = 'rgb(116, 210, 39)';
-        // }
+
     }
 }
 </script>

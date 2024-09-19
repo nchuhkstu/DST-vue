@@ -9,6 +9,7 @@
                 <div class="navigation selected" id="serverList" @click="changeComponent('serverList')">
                     <div class="navigation-icon"><i class="ri-server-line"></i></div>
                     <div class="navigation-font">控制台</div>
+                    <div class="change-button" v-if="clusterStore.is_detail && activeComponent == 'serverList'" @click="back"><i class="ri-arrow-go-back-line"></i></div>
                 </div>
                 <div class="navigation" id="userManage" @click="changeComponent('userManage')">
                     <div class="navigation-icon"><i class="ri-user-line"></i></div>
@@ -68,6 +69,7 @@ import { getSystemInfo,gameVersion } from '../api/systemRequest';
 import { backtrack } from '../api/serverRequest'
 import { useClusterStore } from '../store/clusterStore'
 import { useDownloadStore } from '../store/downloadStore'
+import { useChatStore } from '../store/chatStore'
 import { version } from 'vue'
 export default{
     components:{
@@ -89,6 +91,7 @@ export default{
             systemStore:useSystemStore(),
             clusterStore:useClusterStore(),
             downloadStore:useDownloadStore(),
+            chatStore:useChatStore(),
             version:'XXXXXX'
         }
     },
@@ -145,6 +148,9 @@ export default{
                     this.version = response.data.message;
             })
         },
+        back(){
+            this.clusterStore.is_detail = false;
+        },
         init(){
             this.socketio.on('log',(data)=>{
                 this.logStore.addLog(data);
@@ -174,6 +180,9 @@ export default{
             })
             this.socketio.on('downloading',(data)=>{
                 this.downloadStore.addMessage(data);
+            })
+            this.socketio.on('chat',(data)=>{
+                this.chatStore.addNewMessage(data);
             })
         },
     },
@@ -236,6 +245,7 @@ export default{
     background-color: rgb(110,81,47);
     border-radius: 1vh;
     color: rgb(224, 173, 71);
+    position: relative;
 }
 .navigation-container{
     width: 100%;
@@ -249,6 +259,7 @@ export default{
     /* justify-content: center; */
     border-radius: 1vh;
     cursor: pointer;
+    position: relative;
 }
 .navigation:hover{
     background-color: rgba(110, 81, 47, 1);
@@ -265,7 +276,15 @@ export default{
 .navigation-font{
     font-size: 3vh;
 }
-
+.change-button{
+    position: absolute;
+    right: 1vw;
+    font-size: 3vh;
+    z-index: 999;
+}
+.change-button:hover{
+    color: rgb(255, 170, 0);
+}
 .attention-container{
     height: 10vh;
     width: 100%;

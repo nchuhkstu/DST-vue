@@ -113,7 +113,7 @@
             <div class="memory" v-if="active=='memory'">
                 <div class="memory-title">
                     <div class="memory-title-left">内存</div>
-                    <div class="memory-title-right">32G</div>
+                    <div class="memory-title-right">{{ parseFloat(systemStore.system.memoryData.total / 1024).toFixed(1) + 'GB' }}</div>
                 </div>
                 <div class="memory-description">
                     <div class="memory-description-left">内存使用量</div>
