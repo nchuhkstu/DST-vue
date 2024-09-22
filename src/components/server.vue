@@ -3,7 +3,8 @@
         <div class="item">存档名称：{{ server.cluster_name }}</div>
         <div class="item">房间名称：{{ server.server_name }}</div>
         <div class="item">游戏模式：{{ server.game_mode }}</div>
-        <div class="item">当前天数：{{ server.days }}</div>
+        <!-- <div class="item">当前天数：{{ server.days }}</div> -->
+        <div class="item">当前天数：xxx</div>
         <div class="item">游玩人数：{{ server.current_players + '/' + server.max_players }}</div>
         <div class="item">占用端口：{{ server.port }}</div>
         <div class="item status" :id="'status' + server.cluster_name">游戏状态：{{ server.status }}<i class="ri-alarm-warning-line"></i></div>

@@ -10,7 +10,7 @@
                         <i class="ri-checkbox-circle-line icon2" v-show="add_cluster_mode=='经典模式'"></i>
                         <div class="mode-description">经典模式</div>
                     </div>
-                    <div class="mode" id="mode-2" @click="changeAddClusterMode('岛屿冒险')">
+                    <!-- <div class="mode" id="mode-2" @click="changeAddClusterMode('岛屿冒险')">
                         <i class="ri-checkbox-blank-circle-line icon2" v-show="add_cluster_mode!='岛屿冒险'"></i>
                         <i class="ri-checkbox-circle-line icon2" v-show="add_cluster_mode=='岛屿冒险'"></i>
                         <div class="mode-description">岛屿冒险</div>
@@ -19,7 +19,7 @@
                         <i class="ri-checkbox-blank-circle-line icon2" v-show="add_cluster_mode!='熔炉'"></i>
                         <i class="ri-checkbox-circle-line icon2" v-show="add_cluster_mode=='熔炉'"></i>
                         <div class="mode-description">熔炉</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="second-menu-submit" @click="handleAdd">确定</div>
@@ -88,6 +88,9 @@ export default{
         },
     },
     mounted(){
+        // this.handleGet()
+    },
+    activated(){
         this.handleGet()
     }
 }

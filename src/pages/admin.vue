@@ -3,7 +3,7 @@
         <div class="tip" id="tip">{{tipStore.tip}}</div>
         <div class="admin-left">
             <div class="logo">
-                饥荒联机版服务器看板
+                鱼神饥荒开服面板
             </div>
             <div class="navigation-container">
                 <div class="navigation selected" id="serverList" @click="changeComponent('serverList')">
@@ -12,8 +12,8 @@
                     <div class="change-button" v-if="clusterStore.is_detail && activeComponent == 'serverList'" @click="back"><i class="ri-arrow-go-back-line"></i></div>
                 </div>
                 <div class="navigation" id="map" @click="changeComponent('map')">
-                    <div class="navigation-icon"><i class="ri-user-line"></i></div>
-                    <div class="navigation-font">地图</div>
+                    <div class="navigation-icon"><i class="ri-map-2-line"></i></div>
+                    <div class="navigation-font">地图数据</div>
                 </div>
                 <div class="navigation" id="userManage" @click="changeComponent('userManage')">
                     <div class="navigation-icon"><i class="ri-user-line"></i></div>
@@ -44,7 +44,7 @@
         <div class="admin-right">
             <div class="attention-container">
                 <div class="attention">未经授权,禁止商用</div>
-                <div class="attention">面板版本 : 1.4.0</div>
+                <div class="attention">面板版本 : 1.5.0</div>
                 <div class="attention">游戏版本:{{version}}</div>
                 <div class="link"></div>
             </div>
@@ -74,6 +74,7 @@ import { backtrack } from '../api/serverRequest'
 import { useClusterStore } from '../store/clusterStore'
 import { useDownloadStore } from '../store/downloadStore'
 import { useChatStore } from '../store/chatStore'
+import { useUserStore } from '../store/userStore'
 import { version } from 'vue'
 import map from '../components/map.vue'
 export default{
@@ -90,14 +91,16 @@ export default{
     data(){
         return{
             activeComponent:'serverList',
-            socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
-            // socketio:io(window.location.host,{transports:['websocket']}),
+            // socketio:io('http://192.168.1.4:8081',{transports:['websocket']}),
+            // socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
+            socketio:io(window.location.host,{transports:['websocket']}),
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),
             clusterStore:useClusterStore(),
             downloadStore:useDownloadStore(),
             chatStore:useChatStore(),
+            userStore:useUserStore(),
             version:'XXXXXX'
         }
     },
@@ -173,6 +176,7 @@ export default{
                         this.clusterStore.clusters[i].current_players = data.current_players;
                     }
                 }
+                this.userStore.handleGetUsers();
             })
             this.socketio.on('server_update_status',(data)=>{
                 for(let i=0;i<this.clusterStore.clusters.length;i++){
@@ -252,6 +256,8 @@ export default{
     border-radius: 1vh;
     color: rgb(224, 173, 71);
     position: relative;
+    font-weight: bolder;
+    font-size: 2.5vh;
 }
 .navigation-container{
     width: 100%;
@@ -299,10 +305,11 @@ export default{
 }
 .attention{
     height: calc(100% - 4vh);
-    width: calc(11vw - 3vw);
+    width: calc(11vw - 2vw);
     margin: 2vh 0.5vw;
-    padding: 0 1vw;
+    padding: 0 0.6vw;
     display: flex;
+    font-weight: bolder;
     align-items: center;
     justify-content: center;
     font-size: 1.75vh;

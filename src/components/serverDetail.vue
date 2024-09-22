@@ -34,7 +34,8 @@
                         <div class="item">存档名称：{{ server.cluster_name }}</div>
                         <div class="item">房间名称：{{ server.server_name }}</div>
                         <div class="item">游戏模式：{{ server.game_mode }}</div>
-                        <div class="item">当前天数：{{ server.days }}</div>
+                        <!-- <div class="item">当前天数：{{ server.days }}</div> -->
+                        <div class="item">当前天数：xxx</div>
                         <div class="item">游玩人数：{{ server.current_players + '/' + server.max_players }}</div>
                         <div class="item">占用端口：{{ server.port }}</div>
                         <div class="item status" :id="'status' + server.cluster_name">游戏状态：{{ server.status }}<i class="ri-alarm-warning-line"></i></div>
@@ -44,8 +45,8 @@
                         <div class="operation" @click="showMenu('stop' + server.cluster_name)">停止</div>
                         <div class="operation" @click="handleSave">存档</div>
                         <div class="operation" @click="showMenu('backTrack' + server.cluster_name)">回档</div>
-                        <div class="operation">备份</div>
-                        <div class="operation">下载</div>
+                        <div class="operation" @click="handleRemake">备份</div>
+                        <div class="operation" @click="handleRemake">下载</div>
                         <div class="operation" @click="showMenu('delete' + server.cluster_name)">删除</div>
                     </div>
                 </div>
@@ -63,9 +64,9 @@
             <div class="bottom">
                 <div class="user">
                     <div class="user-online">
-                        <div class="user-online-title">在线玩家</div>
+                        <div class="user-online-title">在线玩家 ({{ onlineUsers.length }}人)</div>
                         <div class="user-online-content">
-                            <div class="user-card" v-for="(value,key) in userStore.users">
+                            <div class="user-card" v-for="(value,key) in onlineUsers">
                                 <img class="user-role" :src="'/static/avatar/' + value.role + '_true.png'">
                                 <div class="user-name">{{ value.name }}</div>
                                 <div class="user-days">{{ (value.survivalTime / 480).toFixed(1) }}天</div>
@@ -78,12 +79,12 @@
                     </div>
                 </div>
                 <div class="rank">
-                    <div class="rank-title">生存排行榜</div>
+                    <div class="rank-title">生存排行榜 ({{ rankUsers.length }}人)</div>
                     <div class="rank-title-content">
-                        <div class="user-card" v-for="(value,key) in userStore.users">
+                        <div class="user-card" v-for="(value,key) in rankUsers">
                             <img class="user-role" :src="'/static/avatar/' + value.role + '_true.png'">
                             <div class="user-name">{{ value.name }}</div>
-                            <div class="user-days">{{ (value.survivalTime / 480).toFixed(1) }}天</div>
+                            <div class="user-days">{{ (value.survivalTime / 480).toFixed(0) }}天</div>
                         </div>
                     </div>
                 </div>
@@ -171,10 +172,20 @@ export default{
             command:"",
             chat:{
                 time:Date.now(),
-                page_size:10,
+                page_size:15,
                 current_page:1,
                 totalPage:1,
             }
+        }
+    },
+    computed: {
+        onlineUsers() {
+            const usersArray = Object.values(this.userStore.users);
+            return usersArray.filter(user => user.online === 'online').sort((a, b) => b.survivalTime - a.survivalTime);
+        },
+        rankUsers() {
+            const usersArray = Object.values(this.userStore.users);
+            return usersArray.sort((a, b) => b.survivalTime - a.survivalTime);
         }
     },
     methods:{
@@ -245,7 +256,7 @@ export default{
             })
         },
         handleRemake(){
-            this.tipStore.showTip('功能正在开发中，尽情期待');
+            this.tipStore.showTip('功能正在开发中，尽请期待');
         },
         handleBackUp(){
             this.tipStore.showTip('功能正在开发中，尽情期待');
@@ -255,6 +266,9 @@ export default{
                 return;
             const cluster_name = this.clusterStore.clusters[this.clusterStore.index].cluster_name;
             getLog(cluster_name).then(response=>{
+                if(response.data.status == "error"){
+                    return;
+                }
                 this.logStore.setLog(cluster_name,response.data);
                 this.$nextTick(()=>{
                     this.clusterStore.refreshIndex();
@@ -383,25 +397,29 @@ export default{
     overflow: auto;
 }
 .user-card{
-    width: 100%;
-    height: 5vh;
     display: flex;
+    height: 5vh;
+    width: 100%;
     margin-bottom: 0.5vh;
 }
 .user-role{
-    height: 4vh;
-    width: 4vh;
-    margin: 0.5vh 0.5vh;
+    height: 3vh;
+    width: 3vh;
+    margin: 1vh 1vh;
 }
 .user-name{
-    font-size: 2.5vh;
-    display: flex;
-    align-items: center;
+    font-size: 2vh;
+    width: calc(100% - 5vh - 3vw);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 5vh;
+    height: 5vh;
 }
 .user-days{
-    font-size: 2vh;
-    margin-left: auto;
-    margin-right: 1.5vw;
+    font-size: 1.5vh;
+    margin-left: 0.5vw;
+    width: 2.5vw;
     display: flex;
     align-items: center;
 }
@@ -450,6 +468,7 @@ export default{
     height: calc(100% - 3.5vh);
     width: 100%;
     background-color: rgba(110, 81, 47, 0.6);
+    overflow: auto;
 }
 .log{
     height: calc(100%);
@@ -470,16 +489,20 @@ export default{
     border: 0.6vh solid rgb(118,82,44);
     border-bottom: none;
     color: rgb(224,173,71);
+    border-top-left-radius: 1vh;
+    border-top-right-radius: 1vh;
 }
 .log-mid{
     height: calc(91% - 4.2vh - 0.6vh);
-    width: calc(100% - 1.2vh - 1vw);
-    padding: 0 0.5vw;
+    width: calc(100% - 1.2vh - 0.1vw);
+    padding-left: 0.1vw;
     background-color: rgba(110, 81, 47, 0.6);
     border: 0.6vh solid rgb(118,82,44);
     border-top: none;
     font-size: 1.5vh;
     overflow: auto;
+    border-bottom-left-radius: 1vh;
+    border-bottom-right-radius: 1vh;
 }
 .log-line{
     width: 100%;
@@ -494,8 +517,8 @@ export default{
     color: white;
 }
 .log-bottom{
-    margin-top: 2%;
-    height: 7%;
+    margin-top: 1vh;
+    height: calc(9% - 1vh);
     width: 100%;
     display: flex;
 }
@@ -508,6 +531,7 @@ export default{
     border: 0.6vh solid rgb(118,82,44);
     outline: none;
     font-size: 2.5vh;
+    border-radius: 1vh;
 }
 .log-button{
     height: calc(100% - 1vh -0.6vh);
@@ -530,7 +554,7 @@ export default{
 }
 .information{
     height: calc(100%);
-    width: calc(66.66%);
+    width: calc(70%);
     border-radius: 1vh;
     display: flex;
     flex-direction: column;
@@ -540,13 +564,14 @@ export default{
     font-size: 2vh;
     height: 10%;
     width: 100%;
-    display: flex;
-    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .operation-container{
     height: calc(100%);
-    width: calc(33.33% - 1vw);
-    margin-left: 1vw;
+    width: calc(30% - 0vw);
+    margin-left: 0vw;
     border-radius: 1vh;
     display: flex;
     flex-direction: column;
@@ -729,5 +754,23 @@ export default{
     color:rgb(116, 210, 39);
     font-weight: bold;
     color: red;
+}
+::-webkit-scrollbar {
+    width: 10px; /* 滚动条宽度 */
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 滚动条轨道背景色 */
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    background: #888; /* 滚动条滑块颜色 */
+}
+
+/* 鼠标悬停时滑块 */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 鼠标悬停时滑块颜色 */
 }
 </style>

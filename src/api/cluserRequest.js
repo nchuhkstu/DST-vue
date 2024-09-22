@@ -14,7 +14,15 @@ export function add(){
 export function getMap(cluster_name){
     return request({
         url:`/cluster/getMap/${cluster_name}`,
-        method: 'get'
+        responseType: 'arraybuffer',
+        method: 'get',
+    })
+}
+export function refreshMap(cluster_name){
+    return request({
+        url:`/cluster/refreshMap/${cluster_name}`,
+        responseType: 'arraybuffer',
+        method: 'get',
     })
 }
 export function getRoom(cluster_name){
