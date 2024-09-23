@@ -5,7 +5,9 @@
             <div class="list-item" :id="`list-item-${index}`" v-for="(cluster,index) in clusterStore.clusters"@click=changeIndex(index)>{{ cluster.cluster_name }}</div>
         </div>
         <div class="map-container">
-            <img class="map" :src="mapx1">
+            <div class="map-detail-container" id="map-detail-container">
+                <img class="map-detail" id="map-detail" @wheel="wheel" :src="mapx1" draggable="false">
+            </div>
             <div class="refresh-button" @click="handleRefreshMap">刷新地图</div>
         </div>
     </div>
@@ -23,6 +25,7 @@ export default{
             clusterStore:useClusterStore(),
             tipStore:useTipStore(),
             clusterStore:useClusterStore(),
+            scale:1,
         }
     },
     methods:{
@@ -55,15 +58,50 @@ export default{
             this.clusterStore.setIndex(Number(index));
             this.handleGetMap();
         },
+        wheel(event){
+            const element = document.getElementById('map-detail');
+            if (event.deltaY < 0) {
+                this.scale += 0.5;
+                element.style.transform = `scale(${this.scale})`;
+            }
+            else{
+                if(this.scale == 1){
+                    element.style.left = 0 + "px";
+                    element.style.top = 0 + "px";
+                }
+                if(this.scale > 1){
+                    this.scale -= 0.5;
+                    element.style.transform = `scale(${this.scale})`;
+                }
+            }
+        },
     },
     mounted(){
-
+        const img = document.getElementById('map-detail');
+        const imgBox = document.getElementById('map-detail-container');
+        document.addEventListener("mouseup", () => {
+            imgBox.onmousemove = null; // 清除move事件
+        })
+        img.onmousedown = function (e) {
+            // 获取鼠标按下时的值
+            let left = this.offsetLeft;
+            let top = this.offsetTop;
+            let startX = e.clientX;
+            let startY = e.clientY;
+            // 给盒子添加鼠标移动事件，获取移动后视口的值
+            imgBox.onmousemove = function (event) {
+                // 获取鼠标移动时的值，并更新图片绝对定位的值
+                img.style.left = event.clientX - startX + left + "px";
+                img.style.top = event.clientY - startY + top + "px";
+            }
+        }
     },
     activated(){
         if(!this.clusterStore.clusters[this.clusterStore.index])
             return;
         this.handleGetMap();
         this.clusterStore.refreshIndex();
+        
     }
 }
 </script>
@@ -123,12 +161,24 @@ export default{
     border: 0.6vh solid rgb(118, 82, 44);
     display: flex;
     border-radius: 1vh;
+    overflow: hidden;
 }
-.map{
-    height: 80vh;
-    width: 80vh;
+.map-detail-container{
+    height: 82vh;
+    width: 82vh;
     margin: auto 0;
-    margin-left: 1vw;
+    margin-left: 0vw;
+    overflow: hidden;
+    position: relative;
+    background-color: black;
+}
+.map-detail{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
 }
 .refresh-button{
     background-color: rgb(228, 196, 118);

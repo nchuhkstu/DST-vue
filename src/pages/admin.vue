@@ -92,8 +92,8 @@ export default{
         return{
             activeComponent:'serverList',
             // socketio:io('http://192.168.1.4:8081',{transports:['websocket']}),
-            // socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
-            socketio:io(window.location.host,{transports:['websocket']}),
+            socketio:io('http://127.0.0.1:5000',{transports:['websocket']}),
+            // socketio:io(window.location.host,{transports:['websocket']}),
             logStore:useLogStore(),
             tipStore:useTipStore(),
             systemStore:useSystemStore(),

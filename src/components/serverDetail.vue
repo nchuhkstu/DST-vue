@@ -621,6 +621,7 @@ export default{
 }
 .chat-card{
     display: flex;
+    flex-wrap: wrap;
 }
 .chat-time-container{
     margin-left: 0.5vw;
